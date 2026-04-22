@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import connectDB from './config/dbConfig.js';
 
 // Load environment variables
 dotenv.config();
@@ -35,8 +36,17 @@ app.get('/', (req, res) => {
   });
 });
 
+
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
+app.listen(PORT,async() => {
+  try{
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Health check available at http://localhost:${PORT}/api/health`);
+    await connectDB();
+    console.log('Database connection established successfully');
+  }
+  catch(error){
+    console.error('Failed to connect to the database:', error);
+    process.exit(1);
+  }
 });

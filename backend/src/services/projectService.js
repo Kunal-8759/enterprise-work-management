@@ -126,41 +126,50 @@ export const deleteProjectService = async (projectId, user) => {
 };
 
 export const addMemberService = async (projectId, memberId, user) => {
-  const project = await findProjectById(projectId);
-  if (!project) {
+    const project = await findProjectById(projectId);
+    if (!project) {
+        return {
+        statusCode: StatusCodes.NOT_FOUND,
+        success: false,
+        message: "Project not found",
+        };
+    }
+
+    const isCreator = project.createdBy._id.toString() === user._id.toString();
+    if (user.role !== "Admin" && !isCreator) {
+        return {
+        statusCode: StatusCodes.FORBIDDEN,
+        success: false,
+        message: "Only the project creator or Admin can add members",
+        };
+    }
+
+    const memberExists = await findUserById(memberId);
+    if (!memberExists) {
+        return {
+        statusCode: StatusCodes.NOT_FOUND,
+        success: false,
+        message: "User to be added not found",
+        };
+    }
+
+    const updated = await addMemberToProject(projectId, memberId);
+
+    await createNotificationService({
+        recipient: memberId,
+        sender: user._id,
+        type: "member_added",
+        message: `You have been added to project: "${project.title}"`,
+        reference: project._id,
+        referenceModel: "Project",
+    });
+
     return {
-      statusCode: StatusCodes.NOT_FOUND,
-      success: false,
-      message: "Project not found",
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Member added successfully",
+        data: { project: updated },
     };
-  }
-
-  const isCreator = project.createdBy._id.toString() === user._id.toString();
-  if (user.role !== "Admin" && !isCreator) {
-    return {
-      statusCode: StatusCodes.FORBIDDEN,
-      success: false,
-      message: "Only the project creator or Admin can add members",
-    };
-  }
-
-  const memberExists = await findUserById(memberId);
-  if (!memberExists) {
-    return {
-      statusCode: StatusCodes.NOT_FOUND,
-      success: false,
-      message: "User to be added not found",
-    };
-  }
-
-  const updated = await addMemberToProject(projectId, memberId);
-
-  return {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "Member added successfully",
-    data: { project: updated },
-  };
 };
 
 export const removeMemberService = async (projectId, memberId, user) => {

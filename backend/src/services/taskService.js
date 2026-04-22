@@ -9,6 +9,7 @@ import {
   deleteCommentFromTask,
 } from "../repositories/taskRepository.js";
 import { findProjectById } from "../repositories/projectRepository.js";
+import { createNotificationService } from "./notificationService.js";
 
 export const createTaskService = async (taskData, userId) => {
   const project = await findProjectById(taskData.project);
@@ -21,6 +22,18 @@ export const createTaskService = async (taskData, userId) => {
   }
 
   const task = await createTask({ ...taskData, createdBy: userId });
+
+  // notify assignee if assigned
+  if (task.assignee && task.assignee.toString() !== userId.toString()) {
+    await createNotificationService({
+      recipient: task.assignee,
+      sender: userId,
+      type: "task_assigned",
+      message: `You have been assigned a new task: ${task.title}`,
+      reference: task._id,
+      referenceModel: "Task",
+    });
+  }
 
   return {
     statusCode: StatusCodes.CREATED,
@@ -89,6 +102,22 @@ export const updateTaskService = async (taskId, updateData, user) => {
 
   const updated = await updateTaskById(taskId, updateData);
 
+   // notify creator when assignee changes status
+  if (
+    updateData.status &&
+    updateData.status !== task.status &&
+    task.createdBy._id.toString() !== user._id.toString()
+  ) {
+    await createNotificationService({
+      recipient: task.createdBy._id,
+      sender: user._id,
+      type: "task_status_changed",
+      message: `Task "${task.title}" status changed to ${updateData.status}`,
+      reference: task._id,
+      referenceModel: "Task",
+    });
+  }
+
   return {
     statusCode: StatusCodes.OK,
     success: true,
@@ -127,26 +156,41 @@ export const deleteTaskService = async (taskId, user) => {
 };
 
 export const addCommentService = async (taskId, text, userId) => {
-  const task = await findTaskById(taskId);
-  if (!task) {
+    const task = await findTaskById(taskId);
+    if (!task) {
+        return {
+        statusCode: StatusCodes.NOT_FOUND,
+        success: false,
+        message: "Task not found",
+        };
+    }
+
+    const updated = await addCommentToTask(taskId, {
+        text,
+        commentedBy: userId,
+    });
+
+    const recipients = [task.createdBy._id, task.assignee?._id].filter(
+        (id) => id && id.toString() !== userId.toString()
+    );
+
+    for (const recipient of recipients) {
+        await createNotificationService({
+        recipient,
+        sender: userId,
+        type: "comment_added",
+        message: `New comment added on task: "${task.title}"`,
+        reference: task._id,
+        referenceModel: "Task",
+        });
+    }
+
     return {
-      statusCode: StatusCodes.NOT_FOUND,
-      success: false,
-      message: "Task not found",
+        statusCode: StatusCodes.CREATED,
+        success: true,
+        message: "Comment added successfully",
+        data: { comments: updated.comments },
     };
-  }
-
-  const updated = await addCommentToTask(taskId, {
-    text,
-    commentedBy: userId,
-  });
-
-  return {
-    statusCode: StatusCodes.CREATED,
-    success: true,
-    message: "Comment added successfully",
-    data: { comments: updated.comments },
-  };
 };
 
 export const deleteCommentService = async (taskId, commentId, user) => {
@@ -185,4 +229,39 @@ export const deleteCommentService = async (taskId, commentId, user) => {
     message: "Comment deleted successfully",
     data: {},
   };
+};
+
+export const uploadAttachmentService = async (taskId, file, user) => {
+    if (!file) {
+        return {
+            statusCode: StatusCodes.BAD_REQUEST,
+            success: false,
+            message: "No file uploaded",
+        };
+    }
+
+    const task = await findTaskById(taskId);
+    if (!task) {
+        return {
+            statusCode: StatusCodes.NOT_FOUND,
+            success: false,
+            message: "Task not found",
+        };
+    }
+
+    const updated = await updateTaskById(taskId, {
+        $push: {
+            attachments: {
+                fileName: file.originalname,
+                filePath: file.path,        // cloudinary url
+            },
+        },
+    });
+
+    return {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "File uploaded successfully",
+        data: { attachments: updated.attachments },
+    };
 };

@@ -1,0 +1,70 @@
+@reference "../index.css";
+
+@layer components {
+  .auth-layout {
+    @apply min-h-screen flex;
+  }
+
+  .auth-left {
+    @apply hidden lg:flex flex-col justify-between p-12 w-1/2;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  }
+
+  .auth-brand {
+    @apply flex flex-col gap-4;
+  }
+
+  .auth-brand-icon {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .auth-brand-title {
+    @apply text-3xl font-bold;
+    color: #ffffff;
+  }
+
+  .auth-brand-subtitle {
+    @apply text-base leading-relaxed;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .auth-features {
+    @apply flex flex-col gap-3;
+  }
+
+  .auth-feature-item {
+    @apply flex items-center gap-3 text-sm;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .auth-feature-dot {
+    @apply w-2 h-2 rounded-full flex-shrink-0;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .auth-right {
+    @apply flex flex-col items-center justify-center p-8 w-full lg:w-1/2;
+    background-color: var(--color-background);
+  }
+
+  .auth-form-card {
+    @apply w-full max-w-md flex flex-col gap-6;
+  }
+
+  .auth-form-header {
+    @apply flex flex-col gap-1;
+  }
+
+  .auth-form-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .auth-form-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+}

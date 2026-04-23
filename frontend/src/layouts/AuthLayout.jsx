@@ -1,3 +1,5 @@
+import "./AuthLayout.css";
+
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
     <div className="auth-layout">

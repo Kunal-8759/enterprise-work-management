@@ -9,6 +9,8 @@ import { registerSchema } from "../utils/validator.js";
 import { registerUser } from "../store/slices/authSlice.js";
 import useAuth from "../hooks/useAuth.js";
 
+import "./Signup.css"
+
 const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -47,7 +49,7 @@ const Signup = () => {
             title="Create an account"
             subtitle="Get started with Enterprise WMS today"
         >
-            <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
                 {/* Name */}
                 <div className="form-group">
                     <label className="form-label">Full name</label>

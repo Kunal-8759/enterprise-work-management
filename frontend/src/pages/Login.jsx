@@ -9,6 +9,8 @@ import { loginSchema } from "../utils/validator.js";
 import { loginUser } from "../store/slices/authSlice.js";
 import useAuth from "../hooks/useAuth.js";
 
+import "./Login.css";
+
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -63,7 +65,7 @@ const Login = () => {
             title="Welcome back"
             subtitle="Sign in to your account to continue"
         >
-            <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
                 {/* Email */}
                 <div className="form-group">
                     <label className="form-label">Email address</label>

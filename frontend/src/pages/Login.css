@@ -1,0 +1,87 @@
+@reference "../index.css";
+
+@layer components {
+  .login-form {
+    @apply flex flex-col gap-4;
+  }
+
+  .form-group {
+    @apply flex flex-col gap-1;
+  }
+
+  .form-label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 rounded-lg outline-none transition-colors duration-200;
+    border: 1px solid var(--color-border);
+    font-size: var(--font-size-sm);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  .input-field:focus {
+    border-color: var(--color-primary);
+  }
+
+  .input-field-error {
+    border-color: var(--color-danger);
+  }
+
+  .input-error {
+    font-size: var(--font-size-xs);
+    color: var(--color-danger);
+    margin-top: 4px;
+  }
+
+  .form-footer {
+    @apply flex items-center justify-between;
+  }
+
+  .remember-me {
+    @apply flex items-center gap-2 cursor-pointer;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .remember-me input[type="checkbox"] {
+    @apply w-4 h-4 rounded cursor-pointer;
+    accent-color: var(--color-primary);
+  }
+
+  .btn-auth {
+    @apply w-full py-2.5 rounded-lg font-semibold transition-colors duration-200 cursor-pointer;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: var(--font-size-sm);
+    border: none;
+  }
+
+  .btn-auth:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .btn-auth:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .auth-divider {
+    @apply text-center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .auth-link {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+}

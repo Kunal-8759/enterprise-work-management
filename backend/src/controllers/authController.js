@@ -22,3 +22,8 @@ export const logout = async (req, res) => {
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };
+
+export const getMe = async (req, res) => {
+  return sendSuccess(res, "User fetched successfully", { user: req.user } , statusCodes.OK);
+};
+

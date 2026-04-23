@@ -2,7 +2,6 @@ import { sendSuccess, sendError } from "../utils/responseHandler.js";
 import {
   registerService,
   loginService,
-  refreshAccessTokenService,
   logoutService,
 } from "../services/authService.js";
 
@@ -14,12 +13,6 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const result = await loginService(req.body);
-  if (!result.success) return sendError(res, result.message, result.statusCode);
-  return sendSuccess(res, result.message, result.data, result.statusCode);
-};
-
-export const refreshAccessToken = async (req, res) => {
-  const result = await refreshAccessTokenService(req.body);
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };

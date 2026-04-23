@@ -34,11 +34,7 @@ const userSchema = new mongoose.Schema(
     lastActivity: {
       type: Date,
       default: Date.now,
-    },
-    refreshToken: {
-      type: String,
-      select: false,
-    },
+    }
   },
   { timestamps: true }
 );

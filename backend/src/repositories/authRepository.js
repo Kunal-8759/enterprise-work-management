@@ -15,7 +15,3 @@ export const createUser = async (userData) => {
 export const updateUserById = async (id, updateData) => {
   return await User.findByIdAndUpdate(id, updateData, { new: true });
 };
-
-export const saveUser = async (user) => {
-  return await user.save({ validateBeforeSave: false });
-};

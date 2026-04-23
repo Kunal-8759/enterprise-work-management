@@ -4,6 +4,7 @@ import {
   loginService,
   logoutService,
 } from "../services/authService.js";
+import { StatusCodes } from "http-status-codes";
 
 export const register = async (req, res) => {
   const result = await registerService(req.body);
@@ -24,6 +25,8 @@ export const logout = async (req, res) => {
 };
 
 export const getMe = async (req, res) => {
-  return sendSuccess(res, "User fetched successfully", { user: req.user } , statusCodes.OK);
+
+  console.log("getMe - req.user:", req.user); // Debugging log
+  return sendSuccess(res, "User fetched successfully", { user: req.user } , StatusCodes.OK);
 };
 

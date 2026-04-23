@@ -3,7 +3,8 @@ import { clearError, logoutUser } from "../store/slices/authSlice.js";
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const { user, isAuthenticated, loading, error } = useSelector(state => state.auth);
+  const { user, isAuthenticated, loading, error, userLoading } = useSelector(state => state.auth);
+
 
   const logout = () => dispatch(logoutUser());
   const resetError = () => dispatch(clearError());
@@ -13,6 +14,7 @@ const useAuth = () => {
     isAuthenticated,
     loading,
     error,
+    userLoading,
     logout,
     resetError,
   };

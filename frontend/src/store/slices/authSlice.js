@@ -65,6 +65,7 @@ const initialState = {
   user: null,
   isAuthenticated: !!localStorage.getItem("accessToken") || !!sessionStorage.getItem("accessToken"),
   loading: false,
+  userLoading : false,
   error: null,
 };
 
@@ -123,15 +124,15 @@ const authSlice = createSlice({
 
         // Fetch Current User cases
         .addCase(fetchCurrentUser.pending, (state) => {
-            state.loading = true;
+            state.userLoading = true;
         })
         .addCase(fetchCurrentUser.fulfilled, (state, action) => {
-            state.loading = false;
+            state.userLoading = false;
             state.user = action.payload;
             state.isAuthenticated = true;
         })
         .addCase(fetchCurrentUser.rejected, (state) => {
-            state.loading = false;
+            state.userLoading = false;
             state.isAuthenticated = false;
             state.user = null;
         });

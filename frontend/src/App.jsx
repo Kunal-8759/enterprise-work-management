@@ -7,6 +7,10 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import NotFound from './pages/NotFound'
 import RoleRoute from './routes/RoleRoute'
 import Unauthorized from './pages/Unauthorized'
+import { useDispatch } from 'react-redux'
+import useAuth from './hooks/useAuth'
+import { useEffect } from 'react'
+import { fetchCurrentUser } from './store/slices/authSlice'
 
 
 // placeholder pages — will be replaced in upcoming phases
@@ -93,11 +97,40 @@ const router = createBrowserRouter([
   },
 ])
 
+
+const AppInitializer = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, userLoading } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCurrentUser());
+    }
+  }, []);
+
+  // wait for user to be fetched before rendering routes
+  if (isAuthenticated && userLoading) {
+    return (
+      <div style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#f3f4f6"
+      }}>
+        <p style={{ color: "#6b7280", fontSize: "0.875rem" }}>Loading...</p>
+      </div>
+    );
+  }
+
+  return <RouterProvider router={router} />;
+};
+
 function App() {
   
   return (
     <>
-      <RouterProvider router={router} />
+      <AppInitializer />
     </>
   )
 }

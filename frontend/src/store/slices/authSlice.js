@@ -6,10 +6,12 @@ export const loginUser = createAsyncThunk(
     "auth/login",
     async (credentials, { rejectWithValue }) => {
         try {
-        const { data } = await axiosInstance.post("/auth/login", credentials);
-        return data.data;
+            const { data } = await axiosInstance.post("/auth/login", credentials);
+            console.log("Login response:", data); // Debugging log
+            return data.data;
         } catch (error) {
-        return rejectWithValue(error.response?.data?.message || "Login failed");
+            console.log("Error message:", error.response?.data?.message); // Debugging log
+            return rejectWithValue(error.response?.data?.message || "Login failed");
         }
     }
 );
@@ -19,6 +21,7 @@ export const registerUser = createAsyncThunk(
     async (userData, { rejectWithValue }) => {
         try {
             const { data } = await axiosInstance.post("/auth/register", userData);
+            console.log("Registration response:", data); // Debugging log
             return data.data;
         } catch (error) {
             return rejectWithValue(
@@ -37,6 +40,7 @@ export const logoutUser = createAsyncThunk(
             return rejectWithValue(error.response?.data?.message || "Logout failed");
         } finally {
             localStorage.removeItem("accessToken");
+            sessionStorage.removeItem("accessToken");
         }
     }
 );
@@ -59,7 +63,7 @@ export const fetchCurrentUser = createAsyncThunk(
 
 const initialState = {
   user: null,
-  isAuthenticated: !!localStorage.getItem("accessToken"),
+  isAuthenticated: !!localStorage.getItem("accessToken") || !!sessionStorage.getItem("accessToken"),
   loading: false,
   error: null,
 };
@@ -88,7 +92,6 @@ const authSlice = createSlice({
             state.loading = false;
             state.isAuthenticated = true;
             state.user = action.payload.user;
-            localStorage.setItem("accessToken", action.payload.accessToken);
         })
         .addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
@@ -102,9 +105,8 @@ const authSlice = createSlice({
         })
         .addCase(registerUser.fulfilled, (state, action) => {
             state.loading = false;
-            state.isAuthenticated = true;
+            state.isAuthenticated = false;
             state.user = action.payload.user;
-            localStorage.setItem("accessToken", action.payload.accessToken);
         })
         .addCase(registerUser.rejected, (state, action) => {
             state.loading = false;

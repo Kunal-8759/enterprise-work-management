@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import {findUserByEmail,findUserById,createUser,saveUser} from "../repositories/authRepository.js";
+import {findUserByEmail,findUserById,createUser} from "../repositories/authRepository.js";
 import jwt from "jsonwebtoken";
 import { generateAccessToken } from "../utils/generateToken.js";
 
@@ -25,7 +25,7 @@ export const registerService = async ({ name, email, password, role }) => {
 
   const accessToken = generateAccessToken(user._id, user.role);
 
-  await saveUser(user);
+  await createUser(user);
 
   return {
     statusCode: StatusCodes.CREATED,
@@ -56,7 +56,6 @@ export const loginService = async ({ email, password }) => {
   const accessToken = generateAccessToken(user._id, user.role);
 
   user.lastActivity = Date.now();
-  await saveUser(user);
 
   return {
     statusCode: StatusCodes.OK,

@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 // request interceptor — attach access token
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,16 +20,10 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// response interceptor — on 401 just clear and redirect to login
+// response interceptor — 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.clear();
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
+  (error) =>  Promise.reject(error)
 );
 
 export default axiosInstance;

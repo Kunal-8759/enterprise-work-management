@@ -3,15 +3,26 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HealthCheck from './HealthCheck'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ProtectedRoute from './routes/ProtectedRoute'
+import NotFound from './pages/NotFound'
+import RoleRoute from './routes/RoleRoute'
+import Unauthorized from './pages/Unauthorized'
+
+
+// placeholder pages — will be replaced in upcoming phases
+const Dashboard = () => <div style={{ padding: "2rem", color: "#111" }}>Dashboard</div>;
+const Projects = () => <div style={{ padding: "2rem", color: "#111" }}>Projects</div>;
+const Tasks = () => <div style={{ padding: "2rem", color: "#111" }}>Tasks</div>;
+const Analytics = () => <div style={{ padding: "2rem", color: "#111" }}>Analytics</div>;
+const Settings = () => <div style={{ padding: "2rem", color: "#111" }}>Settings</div>;
+const Users = () => <div style={{ padding: "2rem", color: "#111" }}>User Management</div>;
+
 
 const router = createBrowserRouter([
+  // public routes
   {
     path : "/health",
     element : <HealthCheck />
-  },
-  {
-    path : "/" ,
-    element : <Login/>
   },
   {
     path : "/login",
@@ -22,13 +33,64 @@ const router = createBrowserRouter([
     element : <Signup/>
   },
   {
-    path : "/logout",
-    element : <h2 style={{ textAlign: "center", marginTop: "2rem" , color : 'white'}}>Logout Page</h2>
+    path : "/unauthorized",
+    element : <Unauthorized />
   },
+  
+  // protected routes
   {
-    path : "/dashboard",
-    element : <h2 style={{ textAlign: "center", marginTop: "2rem" , color : 'white'}}>Dashboard Page</h2>
-  }
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/projects",
+        element: <Projects />,
+      },
+      {
+        path: "/tasks",
+        element: <Tasks />,
+      },
+      {
+        path: "/analytics",
+        element: <Analytics />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+    ],
+  },
+
+  //  Role Protected Routes (Admin only) 
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <RoleRoute allowedRoles={["Admin"]} />,
+        children: [
+          {
+            path: "/users",
+            element: <Users />,
+          },
+        ],
+      },
+    ],
+  },
+
+  //  Redirect root to login 
+  {
+    path: "/",
+    element: <Login />,
+  },
+
+  //  404 : Not Found Page
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ])
 
 function App() {

@@ -76,7 +76,6 @@ export const loginService = async ({ email, password }) => {
 
 export const logoutService = async (userId) => {
   const user = await findUserById(userId);
-  await saveUser(user);
 
   return {
     statusCode: StatusCodes.OK,

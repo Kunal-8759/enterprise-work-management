@@ -70,13 +70,12 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   );
 
   const handleNavClick = () => {
-    // close mobile sidebar on nav click
     if (mobileOpen) setMobileOpen(false);
   };
 
   return (
     <>
-      {/*  Mobile Overlay  */}
+      {/*  Mobile Overlay */}
       {mobileOpen && (
         <div
           className="sidebar-overlay"
@@ -85,19 +84,19 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
       )}
 
       <aside
-        className={`sidebar
-          ${collapsed ? "sidebar-collapsed" : ""}
-          ${mobileOpen ? "sidebar-mobile-open" : ""}
-        `}
+        className={`sidebar ${collapsed ? "sidebar-collapsed" : ""} ${mobileOpen ? "sidebar-mobile-open" : ""}`}
       >
         {/*  Brand  */}
         <div className="sidebar-brand">
+          {/* Icon — always visible */}
           <div className="sidebar-brand-icon">EW</div>
+
+          {/* Name — hidden when collapsed on desktop */}
           {!collapsed && (
             <span className="sidebar-brand-name">Enterprise WMS</span>
           )}
 
-          {/* Close button — mobile only */}
+          {/* Close button — mobile only, always inside brand row */}
           <button
             className="sidebar-mobile-close"
             onClick={() => setMobileOpen(false)}

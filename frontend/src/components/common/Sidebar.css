@@ -2,7 +2,7 @@
 
 @layer components {
 
-  /*  Overlay — mobile only  */
+  /*  Overlay  */
   .sidebar-overlay {
     @apply fixed inset-0 z-40;
     background-color: rgba(0, 0, 0, 0.5);
@@ -16,22 +16,24 @@
     background-color: var(--color-sidebar);
     transition: width var(--transition-normal),
       transform var(--transition-normal);
+    /* overflow: hidden; */
   }
 
   body.dark .sidebar {
     background-color: var(--color-dark-sidebar);
   }
 
-  /*  Desktop collapsed  */
+  /*  Desktop Collapsed  */
   .sidebar-collapsed {
     width: var(--sidebar-collapsed-width);
   }
 
-  /*  Mobile — hidden by default, shown when open  */
+  /*  Mobile — hidden by default  */
   @media (max-width: 1024px) {
     .sidebar {
       transform: translateX(-100%);
-      width: var(--sidebar-width) !important;
+      width: 260px !important;
+      box-shadow: var(--shadow-xl);
     }
 
     .sidebar-mobile-open {
@@ -39,48 +41,67 @@
     }
   }
 
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 240px !important;
+    }
+  }
+
   /*  Brand  */
   .sidebar-brand {
-    @apply flex items-center gap-3 px-4 py-3;
-    height : 64px;
-    width : 100%;
+    @apply flex items-center flex-shrink-0;
+    height: 64px;
+    gap: 10px;
+    padding: 0 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    /* important: no overflow hidden here so X button stays visible */
   }
 
   .sidebar-brand-icon {
     @apply flex items-center justify-center flex-shrink-0 font-bold text-sm;
-    width: 100%;
-    height: 100%;
+    /* fixed size — never grows */
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-md);
     background-color: var(--color-primary);
     color: #ffffff;
   }
 
   .sidebar-brand-name {
-    @apply font-semibold whitespace-nowrap overflow-hidden flex-1;
+    @apply font-semibold whitespace-nowrap flex-1 overflow-hidden;
     font-size: var(--font-size-sm);
     color: #ffffff;
     letter-spacing: 0.01em;
+    text-overflow: ellipsis;
   }
 
-  /* Close button — only on mobile */
+  /*  Mobile Close Button  */
   .sidebar-mobile-close {
-    @apply flex items-center justify-center rounded-lg ml-auto flex-shrink-0;
+    @apply flex items-center justify-center rounded-lg flex-shrink-0;
+    /* always pushed to the right */
+    margin-left: auto;
     width: 30px;
     height: 30px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
+    background: none;
+    border: none;
+    cursor: pointer;
     transition: background-color var(--transition-fast),
       color var(--transition-fast);
+    /* hidden on desktop */
+    display: none;
   }
 
   .sidebar-mobile-close:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.12);
     color: #ffffff;
   }
 
-  @media (min-width: 1025px) {
+  /* show only on mobile/tablet */
+  @media (max-width: 1024px) {
     .sidebar-mobile-close {
-      display: none;
+      display: flex;
     }
   }
 
@@ -90,14 +111,15 @@
   }
 
   .sidebar-link {
-    @apply flex items-center gap-3 rounded-lg whitespace-nowrap;
+    @apply flex items-center gap-3 rounded-lg;
     padding: 0.6rem 1rem;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
     transition: background-color var(--transition-fast),
-    color var(--transition-fast);
-    width: 100%;
+      color var(--transition-fast);
   }
 
   .sidebar-link:hover {
@@ -119,19 +141,22 @@
   }
 
   .sidebar-link-label {
-    @apply overflow-hidden;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   /*  Footer  */
   .sidebar-footer {
-    @apply flex items-center justify-between px-3 py-4 flex-shrink-0;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    @apply flex items-center flex-shrink-0;
+    padding: 0.75rem 0.75rem;
     gap: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .sidebar-user {
     @apply flex items-center gap-2 overflow-hidden flex-1;
+    min-width: 0;
   }
 
   .sidebar-user-avatar {
@@ -145,13 +170,14 @@
 
   .sidebar-user-info {
     @apply flex flex-col overflow-hidden;
+    min-width: 0;
   }
 
   .sidebar-user-name {
-    @apply font-medium whitespace-nowrap overflow-hidden text-ellipsis;
+    @apply font-medium whitespace-nowrap overflow-hidden;
     font-size: var(--font-size-sm);
     color: rgba(255, 255, 255, 0.9);
-    max-width: 110px;
+    text-overflow: ellipsis;
   }
 
   .sidebar-user-role {
@@ -164,6 +190,9 @@
     width: 32px;
     height: 32px;
     color: rgba(255, 255, 255, 0.45);
+    border: none;
+    background: none;
+    cursor: pointer;
     transition: background-color var(--transition-fast),
       color var(--transition-fast);
   }
@@ -173,7 +202,7 @@
     color: #ffffff;
   }
 
-  /* ── Desktop Collapse Toggle ─────────────────────────────────────── */
+  /*  Desktop Collapse Toggle  */
   .sidebar-toggle {
     @apply absolute flex items-center justify-center;
     top: 50%;
@@ -186,17 +215,16 @@
     color: #ffffff;
     box-shadow: var(--shadow-md);
     z-index: 60;
-    transition: background-color var(--transition-fast),
-      transform var(--transition-fast);
+    transition: background-color var(--transition-fast),transform var(--transition-fast);
     border: 2px solid var(--color-surface);
+    cursor: pointer;
   }
 
   .sidebar-toggle:hover {
     background-color: var(--color-primary-hover);
-    transform: translateY(-50%) scale(1.1);
   }
 
-  /* hide toggle on mobile */
+  /* hide on mobile/tablet */
   @media (max-width: 1024px) {
     .sidebar-toggle {
       display: none;

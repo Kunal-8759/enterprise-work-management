@@ -1,0 +1,113 @@
+@reference "../../index.css";
+
+@layer components {
+  .activity-feed {
+    @apply flex flex-col;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xs);
+    overflow: hidden;
+  }
+
+  body.dark .activity-feed {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .activity-empty {
+    @apply flex items-center justify-center;
+    padding: 3rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .activity-item {
+    @apply flex items-start gap-4 px-5 py-4;
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast);
+  }
+
+  .activity-item:last-child {
+    border-bottom: none;
+  }
+
+  .activity-item:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .activity-item {
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  body.dark .activity-item:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .activity-avatar {
+    @apply flex items-center justify-center flex-shrink-0 font-semibold text-sm;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .activity-content {
+    @apply flex flex-col gap-1 flex-1;
+  }
+
+  .activity-message {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-normal);
+  }
+
+  body.dark .activity-message {
+    color: var(--color-dark-text-primary);
+  }
+
+  .activity-meta {
+    @apply flex items-center gap-2;
+  }
+
+  .activity-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full font-medium;
+    font-size: var(--font-size-xs);
+  }
+
+  .activity-time {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  body.dark .activity-time {
+    color: var(--color-dark-text-muted);
+  }
+
+  /* Badge Colors */
+  .activity-emerald {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .activity-teal {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+
+  .activity-warning {
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
+  }
+
+  .activity-info {
+    background-color: var(--color-info-light);
+    color: var(--color-info);
+  }
+
+  .activity-default {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+  }
+}

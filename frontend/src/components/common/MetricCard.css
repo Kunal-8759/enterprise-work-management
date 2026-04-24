@@ -1,0 +1,70 @@
+@reference "../../index.css";
+
+@layer components {
+  .metric-card {
+    @apply flex items-center gap-4 p-5 rounded-xl;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-xs);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .metric-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  body.dark .metric-card {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .metric-card-icon-wrapper {
+    @apply flex items-center justify-center rounded-xl flex-shrink-0;
+    width: 52px;
+    height: 52px;
+  }
+
+  .metric-card-emerald {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .metric-card-teal {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+
+  .metric-card-success {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+  }
+
+  .metric-card-warning {
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
+  }
+
+  .metric-card-info {
+    @apply flex flex-col gap-1;
+  }
+
+  .metric-card-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1;
+  }
+
+  body.dark .metric-card-value {
+    color: var(--color-dark-text-primary);
+  }
+
+  .metric-card-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .metric-card-label {
+    color: var(--color-dark-text-secondary);
+  }
+}

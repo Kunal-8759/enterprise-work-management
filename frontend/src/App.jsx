@@ -12,10 +12,10 @@ import useAuth from './hooks/useAuth'
 import { useEffect } from 'react'
 import { fetchCurrentUser } from './store/slices/authSlice'
 import AppLayout from './layouts/AppLayout'
+import Dashboard from './pages/Dashboard'
 
 
 // placeholder pages — will be replaced in upcoming phases
-const Dashboard = () => <div style={{ padding: "2rem", color: "#111" }}>Dashboard</div>;
 const Projects = () => <div style={{ padding: "2rem", color: "#111" }}>Projects</div>;
 const Tasks = () => <div style={{ padding: "2rem", color: "#111" }}>Tasks</div>;
 const Analytics = () => <div style={{ padding: "2rem", color: "#111" }}>Analytics</div>;

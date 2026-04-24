@@ -5,6 +5,7 @@ import connectDB from './config/dbConfig.js';
 
 import authRoutes from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -20,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

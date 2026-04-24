@@ -1,0 +1,47 @@
+@reference "../index.css";
+
+@layer components {
+  .dashboard {
+    @apply flex flex-col gap-6;
+  }
+
+  .dashboard-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 400px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .dashboard-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .dashboard-metrics {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .dashboard-activity {
+    @apply flex flex-col gap-4;
+  }
+
+  .dashboard-section-header {
+    @apply flex items-center justify-between;
+  }
+
+  .dashboard-section-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .dashboard-section-title {
+    color: var(--color-dark-text-primary);
+  }
+}

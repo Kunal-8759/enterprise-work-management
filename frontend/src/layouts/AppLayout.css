@@ -1,0 +1,33 @@
+@reference "../index.css";
+
+@layer components {
+  .app-layout {
+    @apply flex min-h-screen;
+    background-color: var(--color-bg);
+  }
+
+  body.dark .app-layout {
+    background-color: var(--color-dark-bg);
+  }
+
+  .app-main {
+    @apply flex flex-col flex-1 min-h-screen overflow-hidden;
+    margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-normal);
+  }
+
+  .app-main-collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+
+  /* on mobile, no margin since sidebar is overlaid */
+  @media (max-width: 1024px) {
+    .app-main {
+      margin-left: 0 !important;
+    }
+  }
+
+  .app-content {
+    @apply flex-1 overflow-y-auto p-6;
+  }
+}

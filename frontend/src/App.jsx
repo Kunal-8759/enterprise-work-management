@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import useAuth from './hooks/useAuth'
 import { useEffect } from 'react'
 import { fetchCurrentUser } from './store/slices/authSlice'
+import AppLayout from './layouts/AppLayout'
 
 
 // placeholder pages — will be replaced in upcoming phases
@@ -23,79 +24,33 @@ const Users = () => <div style={{ padding: "2rem", color: "#111" }}>User Managem
 
 
 const router = createBrowserRouter([
-  // public routes
-  {
-    path : "/health",
-    element : <HealthCheck />
-  },
-  {
-    path : "/login",
-    element : <Login/>
-  },
-  {
-    path : "/signup",
-    element : <Signup/>
-  },
-  {
-    path : "/unauthorized",
-    element : <Unauthorized />
-  },
-  
-  // protected routes
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/unauthorized", element: <Unauthorized /> },
   {
     element: <ProtectedRoute />,
     children: [
       {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "/projects",
-        element: <Projects />,
-      },
-      {
-        path: "/tasks",
-        element: <Tasks />,
-      },
-      {
-        path: "/analytics",
-        element: <Analytics />,
-      },
-      {
-        path: "/settings",
-        element: <Settings />,
-      },
-    ],
-  },
-
-  //  Role Protected Routes (Admin only) 
-  {
-    element: <ProtectedRoute />,
-    children: [
-      {
-        element: <RoleRoute allowedRoles={["Admin"]} />,
+        element: <AppLayout />,
         children: [
+          { path: "/dashboard", element: <Dashboard /> },
+          { path: "/projects", element: <Projects /> },
+          { path: "/tasks", element: <Tasks /> },
+          { path: "/analytics", element: <Analytics /> },
+          { path: "/settings", element: <Settings /> },
           {
-            path: "/users",
-            element: <Users />,
+            element: <RoleRoute allowedRoles={["Admin"]} />,
+            children: [
+              { path: "/users", element: <Users /> },
+            ],
           },
         ],
       },
     ],
   },
-
-  //  Redirect root to login 
-  {
-    path: "/",
-    element: <Login />,
-  },
-
-  //  404 : Not Found Page
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-])
+  { path: "/", element: <Login /> },
+  { path: "*", element: <NotFound /> },
+]);
 
 
 const AppInitializer = () => {

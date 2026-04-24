@@ -6,8 +6,13 @@
   }
 
   .auth-left {
-    @apply hidden lg:flex flex-col justify-between p-12 w-1/2;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    @apply flex flex-col justify-between p-12;
+    width: 50%;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-accent) 100%
+    );
   }
 
   .auth-brand {
@@ -15,18 +20,22 @@
   }
 
   .auth-brand-icon {
-    @apply w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold;
-    background-color: rgba(255, 255, 255, 0.2);
+    @apply w-14 h-14 flex items-center justify-center text-xl font-bold;
+    border-radius: var(--radius-xl);
+    background-color: rgba(255, 255, 255, 0.15);
     color: #ffffff;
+    backdrop-filter: blur(8px);
   }
 
   .auth-brand-title {
-    @apply text-3xl font-bold;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
     color: #ffffff;
   }
 
   .auth-brand-subtitle {
-    @apply text-base leading-relaxed;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-loose);
     color: rgba(255, 255, 255, 0.8);
   }
 
@@ -35,18 +44,20 @@
   }
 
   .auth-feature-item {
-    @apply flex items-center gap-3 text-sm;
+    @apply flex items-center gap-3;
+    font-size: var(--font-size-sm);
     color: rgba(255, 255, 255, 0.9);
   }
 
   .auth-feature-dot {
     @apply w-2 h-2 rounded-full flex-shrink-0;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--color-accent-light);
   }
 
   .auth-right {
-    @apply flex flex-col items-center justify-center p-8 w-full lg:w-1/2;
-    background-color: var(--color-background);
+    @apply flex flex-col items-center justify-center p-8;
+    width: 100%;
+    background-color: var(--color-bg);
   }
 
   .auth-form-card {
@@ -59,7 +70,7 @@
 
   .auth-form-title {
     font-size: var(--font-size-2xl);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
   }
 

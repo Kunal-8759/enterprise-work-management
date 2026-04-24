@@ -11,30 +11,38 @@
 
   .form-label {
     font-size: var(--font-size-sm);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
   }
 
   .input-field {
-    @apply w-full px-4 py-2 rounded-lg outline-none transition-colors duration-200;
-    border: 1px solid var(--color-border);
+    @apply w-full outline-none transition-all;
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--color-border);
     font-size: var(--font-size-sm);
     background-color: var(--color-surface);
     color: var(--color-text-primary);
+    transition: border-color var(--transition-fast);
   }
 
   .input-field:focus {
     border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
   }
 
   .input-field-error {
     border-color: var(--color-danger);
   }
 
+  .input-field-error:focus {
+    box-shadow: 0 0 0 3px var(--color-danger-light);
+  }
+
   .input-error {
     font-size: var(--font-size-xs);
     color: var(--color-danger);
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .form-footer {
@@ -48,24 +56,32 @@
   }
 
   .remember-me input[type="checkbox"] {
-    @apply w-4 h-4 rounded cursor-pointer;
+    @apply w-4 h-4 cursor-pointer;
     accent-color: var(--color-primary);
+    border-radius: var(--radius-sm);
   }
 
   .btn-auth {
-    @apply w-full py-2.5 rounded-lg font-semibold transition-colors duration-200 cursor-pointer;
+    @apply w-full font-semibold transition-all;
+    padding: 0.675rem 1rem;
+    border-radius: var(--radius-md);
     background-color: var(--color-primary);
     color: #ffffff;
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semi);
     border: none;
+    transition: background-color var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .btn-auth:hover {
     background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
   }
 
   .btn-auth:disabled {
-    @apply cursor-not-allowed opacity-60;
+    @apply cursor-not-allowed;
+    opacity: 0.6;
   }
 
   .auth-divider {
@@ -77,11 +93,13 @@
   .auth-link {
     font-size: var(--font-size-sm);
     color: var(--color-primary);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     text-decoration: none;
+    transition: color var(--transition-fast);
   }
 
   .auth-link:hover {
+    color: var(--color-primary-hover);
     text-decoration: underline;
   }
 }

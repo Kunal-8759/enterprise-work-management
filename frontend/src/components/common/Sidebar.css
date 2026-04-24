@@ -119,7 +119,7 @@
     white-space: nowrap;
     overflow: hidden;
     transition: background-color var(--transition-fast),
-      color var(--transition-fast);
+    color var(--color-surface);
   }
 
   .sidebar-link:hover {
@@ -132,7 +132,7 @@
   }
 
   .sidebar-link-active {
-    background-color: var(--color-primary) !important;
+    background-color: var(--color-dark-surface) !important;
     color: #ffffff !important;
   }
 

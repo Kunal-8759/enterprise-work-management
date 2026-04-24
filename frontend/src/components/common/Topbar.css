@@ -59,6 +59,9 @@
   }
 
   /* Notification Badge */
+  .topbar-notif-wrapper {
+    @apply relative;
+  }
   .topbar-notif-btn {
     @apply relative;
   }

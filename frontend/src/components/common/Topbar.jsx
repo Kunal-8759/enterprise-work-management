@@ -1,8 +1,10 @@
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Bell, Sun, Moon, Menu } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import { useSelector } from "react-redux";
+import NotificationDropdown from "./NotificationDropdown.jsx";
 import "./Topbar.css";
 
 const pageTitles = {
@@ -22,13 +24,15 @@ const Topbar = ({ setMobileOpen }) => {
     (state) => state.notifications?.unreadCount || 0
   );
 
+  const [notifOpen, setNotifOpen] = useState(false);
+  const bellRef = useRef(null);
+
   const pageTitle = pageTitles[location.pathname] || "Enterprise WMS";
 
   return (
     <header className="topbar">
       {/* ── Left ─────────────────────────────────────────────────── */}
       <div className="topbar-left">
-        {/* Hamburger — mobile only */}
         <button
           className="topbar-hamburger"
           onClick={() => setMobileOpen(true)}
@@ -51,17 +55,24 @@ const Topbar = ({ setMobileOpen }) => {
         </button>
 
         {/* Notification Bell */}
-        <button
-          className="topbar-icon-btn topbar-notif-btn"
-          title="Notifications"
-        >
-          <Bell size={20} />
-          {unreadCount > 0 && (
-            <span className="topbar-notif-badge">
-              {unreadCount > 99 ? "99+" : unreadCount}
-            </span>
+        <div className="topbar-notif-wrapper" ref={bellRef}>
+          <button
+            className="topbar-icon-btn topbar-notif-btn"
+            onClick={() => setNotifOpen((prev) => !prev)}
+            title="Notifications"
+          >
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="topbar-notif-badge">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
+          </button>
+
+          {notifOpen && (
+            <NotificationDropdown onClose={() => setNotifOpen(false)} />
           )}
-        </button>
+        </div>
 
         {/* User Info */}
         <div className="topbar-user">

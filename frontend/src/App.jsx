@@ -13,10 +13,11 @@ import { useEffect } from 'react'
 import { fetchCurrentUser } from './store/slices/authSlice'
 import AppLayout from './layouts/AppLayout'
 import Dashboard from './pages/Dashboard'
+import Projects from './pages/projects/Projects'
+import ProjectDetail from './pages/projects/ProjectDetail'
 
 
 // placeholder pages — will be replaced in upcoming phases
-const Projects = () => <div style={{ padding: "2rem", color: "#111" }}>Projects</div>;
 const Tasks = () => <div style={{ padding: "2rem", color: "#111" }}>Tasks</div>;
 const Analytics = () => <div style={{ padding: "2rem", color: "#111" }}>Analytics</div>;
 const Settings = () => <div style={{ padding: "2rem", color: "#111" }}>Settings</div>;
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/dashboard", element: <Dashboard /> },
           { path: "/projects", element: <Projects /> },
+          { path: "/projects/:id", element: <ProjectDetail /> },
           { path: "/tasks", element: <Tasks /> },
           { path: "/analytics", element: <Analytics /> },
           { path: "/settings", element: <Settings /> },

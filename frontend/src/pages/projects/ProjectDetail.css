@@ -1,0 +1,278 @@
+@reference "../../index.css";
+
+@layer components {
+  .project-detail {
+    @apply flex flex-col gap-6;
+  }
+
+  .detail-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 400px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .detail-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /*  Back  */
+  .detail-back {
+    @apply flex items-center gap-2 w-fit;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-md);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .detail-back:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-back {
+    color: var(--color-dark-text-secondary);
+  }
+
+  body.dark .detail-back:hover {
+    background-color: var(--color-dark-bg-secondary);
+    color: var(--color-dark-text-primary);
+  }
+
+  /*  Header  */
+  .detail-header {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .detail-header-left {
+    @apply flex flex-col gap-2 flex-1;
+  }
+
+  .detail-badges {
+    @apply flex items-center gap-2;
+  }
+
+  .detail-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  body.dark .detail-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+    max-width: 600px;
+  }
+
+  body.dark .detail-desc {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .detail-actions {
+    @apply flex items-center gap-2 flex-shrink-0;
+  }
+
+  .detail-btn-edit {
+    @apply flex items-center gap-2 font-medium;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-border);
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .detail-btn-edit:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-btn-edit {
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-secondary);
+  }
+
+  .detail-btn-delete {
+    @apply flex items-center gap-2 font-medium;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-danger-light);
+    background: none;
+    color: var(--color-danger);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .detail-btn-delete:hover {
+    background-color: var(--color-danger-light);
+  }
+
+  /*  Info Grid  */
+  .detail-info-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .detail-info-card {
+    @apply flex flex-col gap-1;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  body.dark .detail-info-card {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .detail-info-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-info-value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-info-value {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-info-icon-row {
+    @apply flex items-center gap-1.5;
+  }
+
+  /*  Section  */
+  .detail-section {
+    @apply flex flex-col gap-4;
+    padding: 1.25rem;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  body.dark .detail-section {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .detail-section-header {
+    @apply flex items-center justify-between;
+  }
+
+  .detail-section-title {
+    @apply flex items-center gap-2;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-section-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  /*  Members  */
+  .detail-members-list {
+    @apply flex flex-col gap-2;
+  }
+
+  .detail-member-item {
+    @apply flex items-center gap-3;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-lg);
+    transition: background-color var(--transition-fast);
+  }
+
+  .detail-member-item:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .detail-member-item:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .detail-member-avatar {
+    @apply flex items-center justify-center flex-shrink-0 font-semibold text-sm;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .detail-member-info {
+    @apply flex flex-col flex-1;
+  }
+
+  .detail-member-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-member-name {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-member-role {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .detail-member-remove {
+    @apply flex items-center justify-center rounded-lg opacity-0;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      opacity var(--transition-fast);
+  }
+
+  .detail-member-item:hover .detail-member-remove {
+    opacity: 1;
+  }
+
+  .detail-member-remove:hover {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+}

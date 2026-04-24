@@ -1,0 +1,80 @@
+@reference "../../index.css";
+
+@layer components {
+  .projects-page {
+    @apply flex flex-col gap-6;
+  }
+
+  .projects-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 400px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .projects-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .projects-header {
+    @apply flex items-center justify-between;
+  }
+
+  .projects-header-left {
+    @apply flex flex-col gap-1;
+  }
+
+  .projects-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  body.dark .projects-count {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .btn-create {
+    @apply flex items-center gap-2 font-semibold transition-all;
+    padding: 0.55rem 1.1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: var(--font-size-sm);
+    border: none;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .btn-create:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  .projects-empty {
+    @apply flex flex-col items-center justify-center gap-4;
+    min-height: 400px;
+  }
+
+  .projects-empty-text {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+  }
+
+  .projects-grid {
+    @apply grid gap-5;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}

@@ -70,7 +70,7 @@ const Topbar = ({ setMobileOpen }) => {
           </button>
 
           {notifOpen && (
-            <NotificationDropdown onClose={() => setNotifOpen(false)} />
+            <NotificationDropdown bellRef={bellRef} onClose={() => setNotifOpen(false)}/>
           )}
         </div>
 

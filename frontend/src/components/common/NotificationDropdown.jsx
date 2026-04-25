@@ -25,7 +25,7 @@ const typeLabelMap = {
     member_added: "Member",
 };
 
-const NotificationDropdown = ({ onClose }) => {
+const NotificationDropdown = ({ onClose , bellRef}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
@@ -40,7 +40,12 @@ const NotificationDropdown = ({ onClose }) => {
     // close on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(e.target) &&
+                bellRef?.current &&
+                !bellRef.current.contains(e.target)  // ← don't close when clicking the bell
+            ) {
                 onClose();
             }
         };
@@ -76,7 +81,7 @@ const NotificationDropdown = ({ onClose }) => {
 
     return (
         <div className="notif-dropdown" ref={dropdownRef}>
-            {/* ── Header ──────────────────────────────────────────────── */}
+            {/*  Header  */}
             <div className="notif-header">
                 <div className="notif-header-left">
                     <h3 className="notif-title">Notifications</h3>
@@ -94,7 +99,7 @@ const NotificationDropdown = ({ onClose }) => {
                 )}
             </div>
 
-            {/* ── Body ────────────────────────────────────────────────── */}
+            {/*  Body  */}
             <div className="notif-body">
                 {loading ? (
                     <div className="notif-loader">

@@ -31,7 +31,7 @@ const Topbar = ({ setMobileOpen }) => {
 
   return (
     <header className="topbar">
-      {/* ── Left ─────────────────────────────────────────────────── */}
+      {/*  Left  */}
       <div className="topbar-left">
         <button
           className="topbar-hamburger"
@@ -43,7 +43,7 @@ const Topbar = ({ setMobileOpen }) => {
         <h1 className="topbar-title">{pageTitle}</h1>
       </div>
 
-      {/* ── Right ────────────────────────────────────────────────── */}
+      {/*  Right  */}
       <div className="topbar-right">
         {/* Theme Toggle */}
         <button
@@ -62,7 +62,7 @@ const Topbar = ({ setMobileOpen }) => {
             title="Notifications"
           >
             <Bell size={20} />
-            {unreadCount > 0 && (
+            {unreadCount > 0 && !notifOpen && (
               <span className="topbar-notif-badge">
                 {unreadCount > 99 ? "99+" : unreadCount}
               </span>

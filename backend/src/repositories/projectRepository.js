@@ -18,7 +18,9 @@ export const findProjectById = async (id) => {
 };
 
 export const updateProjectById = async (id, updateData) => {
-  return await Project.findByIdAndUpdate(id, updateData, { new: true });
+  return await Project.findByIdAndUpdate(id, updateData, { new: true })
+    .populate("createdBy", "name email role")
+    .populate("members", "name email role");
 };
 
 export const deleteProjectById = async (id) => {

@@ -47,7 +47,9 @@ export const updateProject = createAsyncThunk(
   "projects/update",
   async ({ id, updateData }, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.put(`/projects/${id}`, updateData);
+      await axiosInstance.put(`/projects/${id}`, updateData);
+      // Re-fetch to get fully populated data (with names, emails etc.)
+      const { data } = await axiosInstance.get(`/projects/${id}`);
       return data.data.project;
     } catch (error) {
       return rejectWithValue(
@@ -75,10 +77,9 @@ export const addProjectMember = createAsyncThunk(
   "projects/addMember",
   async ({ projectId, memberId }, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.post(
-        `/projects/${projectId}/members`,
-        { memberId }
-      );
+      await axiosInstance.post(`/projects/${projectId}/members`, { memberId });
+      // Re-fetch to get fully populated data
+      const { data } = await axiosInstance.get(`/projects/${projectId}`);
       return data.data.project;
     } catch (error) {
       return rejectWithValue(
@@ -92,9 +93,9 @@ export const removeProjectMember = createAsyncThunk(
   "projects/removeMember",
   async ({ projectId, memberId }, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.delete(
-        `/projects/${projectId}/members/${memberId}`
-      );
+      await axiosInstance.delete(`/projects/${projectId}/members/${memberId}`);
+      // Re-fetch to get fully populated data
+      const { data } = await axiosInstance.get(`/projects/${projectId}`);
       return data.data.project;
     } catch (error) {
       return rejectWithValue(

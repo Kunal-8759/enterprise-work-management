@@ -9,6 +9,7 @@ import {
   removeMemberFromProject
 } from "../repositories/projectRepository.js";
 import { findUserById } from "../repositories/authRepository.js";
+import { createNotificationService } from "./notificationService.js";
 
 export const createProjectService = async (projectData, userId) => {
   const project = await createProject({
@@ -155,20 +156,25 @@ export const addMemberService = async (projectId, memberId, user) => {
 
     const updated = await addMemberToProject(projectId, memberId);
 
-    await createNotificationService({
+    // Notification is non-critical — don't let it fail the main operation
+    try {
+      await createNotificationService({
         recipient: memberId,
         sender: user._id,
         type: "member_added",
         message: `You have been added to project: "${project.title}"`,
         reference: project._id,
         referenceModel: "Project",
-    });
+      });
+    } catch (notifError) {
+      console.error("Notification failed (non-critical):", notifError.message);
+    }
 
     return {
-        statusCode: StatusCodes.OK,
-        success: true,
-        message: "Member added successfully",
-        data: { project: updated },
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: "Member added successfully",
+      data: { project: updated },
     };
 };
 

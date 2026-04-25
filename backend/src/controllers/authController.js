@@ -3,6 +3,8 @@ import {
   registerService,
   loginService,
   logoutService,
+  updateProfileService,
+  changePasswordService,
 } from "../services/authService.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -28,5 +30,17 @@ export const getMe = async (req, res) => {
 
   console.log("getMe - req.user:", req.user); // Debugging log
   return sendSuccess(res, "User fetched successfully", { user: req.user } , StatusCodes.OK);
+};
+
+export const updateProfile = async (req, res) => {
+  const result = await updateProfileService(req.user._id, req.body);
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
+};
+
+export const changePassword = async (req, res) => {
+  const result = await changePasswordService(req.user._id, req.body);
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
 };
 

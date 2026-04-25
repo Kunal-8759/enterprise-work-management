@@ -17,11 +17,11 @@ import Projects from './features/projects/Projects.jsx';
 import ProjectDetail from './features/projects/ProjectDetail.jsx';
 import Tasks from './features/tasks/Tasks.jsx';
 import Users from './features/users/Users.jsx';
+import Settings from './features/settings/Setting.jsx';
 
 
 // placeholder pages — will be replaced in upcoming phases
 const Analytics = () => <div style={{ padding: "2rem", color: "#111" }}>Analytics</div>;
-const Settings = () => <div style={{ padding: "2rem", color: "#111" }}>Settings</div>;
 
 
 const router = createBrowserRouter([

@@ -59,6 +59,33 @@ export const fetchCurrentUser = createAsyncThunk(
     }
 );
 
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosInstance.patch("/auth/update-profile", profileData);
+      return data.data.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update profile"
+      );
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (passwordData, { rejectWithValue }) => {
+    try {
+      await axiosInstance.patch("/auth/change-password", passwordData);
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to change password"
+      );
+    }
+  }
+);
+
 //  Initial State 
 
 const initialState = {
@@ -135,7 +162,15 @@ const authSlice = createSlice({
             state.userLoading = false;
             state.isAuthenticated = false;
             state.user = null;
-        });
+        })
+
+        //update profile
+        .addCase(updateProfile.fulfilled, (state, action) => {
+        state.user = { ...state.user, ...action.payload };
+        })
+
+        // change password 
+        .addCase(changePassword.fulfilled, () => {});
     },
 });
 

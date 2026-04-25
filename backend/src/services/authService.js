@@ -84,3 +84,74 @@ export const logoutService = async (userId) => {
     data: {},
   };
 };
+
+
+export const updateProfileService = async (userId, { name }) => {
+  if (!name || name.trim().length === 0) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      success: false,
+      message: "Name cannot be empty",
+    };
+  }
+
+  const updated = await updateUserById(userId, { name: name.trim() });
+  return {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Profile updated successfully",
+    data: {
+      user: {
+        id: updated._id,
+        name: updated.name,
+        email: updated.email,
+        role: updated.role,
+      },
+    },
+  };
+};
+
+export const changePasswordService = async (userId, { currentPassword, newPassword }) => {
+  if (!currentPassword || !newPassword) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      success: false,
+      message: "Current and new password are required",
+    };
+  }
+
+  if (newPassword.length < 6) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      success: false,
+      message: "New password must be at least 6 characters",
+    };
+  }
+
+  if (currentPassword === newPassword) {
+    return {
+      statusCode: StatusCodes.BAD_REQUEST,
+      success: false,
+      message: "New password must be different from current password",
+    };
+  }
+
+  const user = await findUserById(userId, "+password");
+  if (!user || !(await user.comparePassword(currentPassword))) {
+    return {
+      statusCode: StatusCodes.UNAUTHORIZED,
+      success: false,
+      message: "Current password is incorrect",
+    };
+  }
+
+  user.password = newPassword;
+  await user.save(); // triggers bcrypt pre-save hook
+
+  return {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Password changed successfully",
+    data: {},
+  };
+};

@@ -1,0 +1,119 @@
+@reference "../../index.css";
+
+@layer components {
+  .date-range-picker {
+    @apply flex flex-wrap items-end gap-4;
+    @apply rounded-xl p-4;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  body.dark .date-range-picker {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .date-inputs {
+    @apply flex gap-3;
+  }
+
+  .date-input-group {
+    @apply flex flex-col gap-1;
+  }
+
+  .date-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .date-label {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .date-input {
+    @apply px-3 py-1.5 rounded-lg border text-sm;
+    border-color: var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .date-input {
+    border-color: var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+    color: var(--color-dark-text-primary);
+  }
+
+  .date-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .preset-buttons {
+    @apply flex gap-2;
+  }
+
+  .preset-btn {
+    @apply px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .preset-btn {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-secondary);
+  }
+
+  .preset-btn:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .preset-btn:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .preset-btn-active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  .preset-btn-active:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .date-actions {
+    @apply flex gap-2;
+  }
+
+  .date-btn {
+    @apply px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer;
+  }
+
+  .date-btn-clear {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .date-btn-clear {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-secondary);
+  }
+
+  .date-btn-clear:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .date-btn-apply {
+    background-color: var(--color-primary);
+    border: none;
+    color: white;
+  }
+
+  .date-btn-apply:hover {
+    background-color: var(--color-primary-hover);
+  }
+}

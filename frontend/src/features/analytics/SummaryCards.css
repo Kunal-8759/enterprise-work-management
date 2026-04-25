@@ -1,0 +1,83 @@
+@reference "../../index.css";
+
+@layer components {
+  .summary-cards {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .summary-card {
+    @apply rounded-xl p-5 flex items-center justify-between transition-all;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  body.dark .summary-card {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .summary-card-header {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center;
+  }
+
+  .summary-card--primary .summary-card-header {
+    background-color: var(--color-primary-light);
+  }
+  .summary-card--primary .summary-card-icon {
+    color: var(--color-primary);
+  }
+
+  .summary-card--accent .summary-card-header {
+    background-color: var(--color-accent-light);
+  }
+  .summary-card--accent .summary-card-icon {
+    color: var(--color-accent);
+  }
+
+  .summary-card--success .summary-card-header {
+    background-color: var(--color-success-light);
+  }
+  .summary-card--success .summary-card-icon {
+    color: var(--color-success);
+  }
+
+  .summary-card--danger .summary-card-header {
+    background-color: var(--color-danger-light);
+  }
+  .summary-card--danger .summary-card-icon {
+    color: var(--color-danger);
+  }
+
+  .summary-card-icon {
+    @apply w-6 h-6;
+  }
+
+  .summary-card-body {
+    @apply text-right;
+  }
+
+  .summary-card-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .summary-card-label {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .summary-card-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .summary-card-value {
+    color: var(--color-dark-text-primary);
+  }
+}

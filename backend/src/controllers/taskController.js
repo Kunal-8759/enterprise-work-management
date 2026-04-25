@@ -24,7 +24,7 @@ export const getAllTasks = async (req, res) => {
 };
 
 export const getTaskById = async (req, res) => {
-  const result = await getTaskByIdService(req.params.id);
+  const result = await getTaskByIdService(req.params.id, req.user);
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };

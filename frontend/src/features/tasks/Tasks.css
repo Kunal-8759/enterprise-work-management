@@ -2,7 +2,9 @@
 
 @layer components {
   .tasks-page {
-    @apply flex flex-col gap-6;
+     @apply flex flex-col gap-6;
+    height: 100%;
+    overflow: hidden;
   }
 
   .tasks-loader {

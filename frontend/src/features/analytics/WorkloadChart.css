@@ -1,0 +1,97 @@
+@reference "../../index.css";
+
+@layer components {
+  .workload-container {
+    @apply rounded-xl p-5;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  body.dark .workload-container {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .workload-list {
+    @apply flex flex-col gap-4;
+  }
+
+  .workload-item {
+    @apply flex flex-col gap-1;
+  }
+
+  .workload-info {
+    @apply flex items-center justify-between text-sm;
+  }
+
+  .workload-user {
+    @apply flex items-center gap-2;
+  }
+
+  .workload-name {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .workload-name {
+    color: var(--color-dark-text-primary);
+  }
+
+  .workload-role {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+  }
+
+  body.dark .workload-role {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .workload-stats {
+    @apply flex gap-3;
+    font-size: var(--font-size-xs);
+  }
+
+  .workload-assigned {
+    color: var(--color-text-secondary);
+  }
+
+  .workload-completed {
+    color: var(--color-success);
+  }
+
+  .workload-bar-container {
+    @apply h-2 rounded-full overflow-hidden;
+    background-color: var(--color-border);
+  }
+
+  body.dark .workload-bar-container {
+    background-color: var(--color-dark-border);
+  }
+
+  .workload-bar {
+    @apply h-full rounded-full;
+    background-color: var(--color-border-strong);
+    position: relative;
+  }
+
+  .workload-bar-completed {
+    @apply h-full rounded-full;
+    background-color: var(--color-primary);
+    transition: width var(--transition-normal);
+  }
+
+  body.dark .workload-bar {
+    background-color: var(--color-dark-border-strong);
+  }
+
+  .workload-percent {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-align: right;
+  }
+
+  body.dark .workload-percent {
+    color: var(--color-dark-text-secondary);
+  }
+}

@@ -61,7 +61,7 @@ const NotificationDropdown = ({ onClose , bellRef}) => {
 
         // navigate to related resource
         if (notification.referenceModel === "Task") {
-            navigate(`/tasks/${notification.reference}`);
+            navigate(`/tasks?taskId=${notification.reference}`);
         } else if (notification.referenceModel === "Project") {
             navigate(`/projects/${notification.reference}`);
         }

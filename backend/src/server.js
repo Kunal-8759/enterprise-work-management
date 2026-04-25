@@ -12,6 +12,7 @@ import projectRoutes from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import taskRoutes from "./routes/taskRoute.js";
 import cloudinary from './config/cloudinary.js';
+import analyticsRoutes from "./routes/analyticsRoutes.js";
 
 // Load environment variables
 
@@ -30,6 +31,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 
 // Health check endpoint

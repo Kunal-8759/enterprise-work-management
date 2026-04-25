@@ -1,7 +1,13 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Plus, Loader2, LayoutList, LayoutDashboard } from "lucide-react";
-import { fetchTasks, deleteTask } from "../../store/slices/taskSlice.js";
+import {
+  fetchTasks,
+  fetchTaskById,
+  deleteTask,
+  clearSelectedTask,
+} from "../../store/slices/taskSlice.js";
 import { fetchProjects } from "../../store/slices/projectSlice.js";
 import KanbanBoard from "./KanbanBoard.jsx";
 import TaskListView from "./TaskListView.jsx";
@@ -16,8 +22,12 @@ const VIEW_KEY = "tasks_view_preference";
 
 const Tasks = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const { tasks, loading } = useSelector((state) => state.tasks);
+  const { tasks, loading, selectedTask, detailLoading } = useSelector(
+    (state) => state.tasks
+  );
   const { projects } = useSelector((state) => state.projects);
 
   const [view, setView] = useState(
@@ -32,14 +42,64 @@ const Tasks = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
+  // ── Read taskId from query param ───────────────────────────────
+  const taskIdFromUrl = searchParams.get("taskId");
+
   useEffect(() => {
     dispatch(fetchTasks());
     dispatch(fetchProjects());
   }, [dispatch]);
 
+  // ── Auto open modal if taskId in URL ───────────────────────────
+  useEffect(() => {
+    if (taskIdFromUrl) {
+      dispatch(fetchTaskById(taskIdFromUrl));
+    } else {
+      // clean up selected task when no taskId in URL
+      dispatch(clearSelectedTask());
+      setDetailTask(null);
+    }
+  }, [taskIdFromUrl, dispatch]);
+
+  // ── Once task is fetched, check access and open modal ──────────
+  useEffect(() => {
+    if (!detailLoading && selectedTask && taskIdFromUrl) {
+      // Access control: Members(Employee and Manager) except Admin can only view tasks they created or are assigned to
+      if (user.role === ROLES.EMPLOYEE ) {
+        const isAssignee = selectedTask?.assignee?._id === user?.id;
+        const isCreator = selectedTask?.createdBy?._id === user?.id;
+        if (!isAssignee && !isCreator) {
+          navigate("/unauthorized");
+          return;
+        }
+      }
+      // open detail modal
+      setDetailTask(selectedTask);
+    }
+  }, [detailLoading, selectedTask, taskIdFromUrl, user, navigate]);
+
+  //  Handlers 
   const handleViewToggle = (newView) => {
     setView(newView);
     localStorage.setItem(VIEW_KEY, newView);
+  };
+
+  const handleTaskClick = (task) => {
+    setDetailTask(task);
+  };
+
+  const handleDetailClose = () => {
+    setDetailTask(null);
+    dispatch(clearSelectedTask());
+    // clean URL if taskId was in query param
+    if (taskIdFromUrl) {
+      navigate("/tasks", { replace: true });
+    }
+  };
+
+  const handleEditTask = (task) => {
+    setDetailTask(null);
+    setEditTask(task);
   };
 
   const handleDeleteTask = async (taskId) => {
@@ -47,12 +107,14 @@ const Tasks = () => {
     const result = await dispatch(deleteTask(taskId));
     if (deleteTask.fulfilled.match(result)) {
       toast.success("Task deleted successfully");
+      setDetailTask(null);
+      if (taskIdFromUrl) navigate("/tasks", { replace: true });
     } else {
       toast.error(result.payload || "Failed to delete task");
     }
   };
 
-  // frontend filtering
+  //  Frontend filtering 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       const matchesProject = filterProject
@@ -80,10 +142,11 @@ const Tasks = () => {
 
   return (
     <div className="tasks-page">
-      {/* ── Header ──────────────────────────────────────────────── */}
+      {/*  Header  */}
       <div className="tasks-header">
         <p className="tasks-count">
-          {filteredTasks.length} {filteredTasks.length === 1 ? "Task" : "Tasks"}
+          {filteredTasks.length}{" "}
+          {filteredTasks.length === 1 ? "Task" : "Tasks"}
         </p>
         <div className="tasks-header-right">
           {/* View Toggle */}
@@ -114,9 +177,8 @@ const Tasks = () => {
         </div>
       </div>
 
-      {/* ── Filters ─────────────────────────────────────────────── */}
+      {/*  Filters  */}
       <div className="tasks-filters">
-        {/* Search */}
         <input
           type="text"
           className="input-field tasks-search"
@@ -124,8 +186,6 @@ const Tasks = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-
-        {/* Project Filter */}
         <select
           className="input-field tasks-filter-select"
           value={filterProject}
@@ -136,8 +196,6 @@ const Tasks = () => {
             <option key={p._id} value={p._id}>{p.title}</option>
           ))}
         </select>
-
-        {/* Status Filter */}
         <select
           className="input-field tasks-filter-select"
           value={filterStatus}
@@ -148,8 +206,6 @@ const Tasks = () => {
           <option value="in-progress">In Progress</option>
           <option value="done">Done</option>
         </select>
-
-        {/* Clear Filters */}
         {(filterProject || filterStatus || searchQuery) && (
           <button
             className="tasks-clear-filters"
@@ -164,33 +220,36 @@ const Tasks = () => {
         )}
       </div>
 
-      {/* ── View ────────────────────────────────────────────────── */}
+      {/*  View  */}
       {view === "kanban" ? (
         <KanbanBoard
           tasks={filteredTasks}
-          onTaskClick={setDetailTask}
+          onTaskClick={handleTaskClick}
         />
       ) : (
         <TaskListView
           tasks={filteredTasks}
-          onTaskClick={setDetailTask}
+          onTaskClick={handleTaskClick}
           onEditTask={setEditTask}
           onDeleteTask={handleDeleteTask}
         />
       )}
 
-      {/* ── Modals ──────────────────────────────────────────────── */}
+      {/*  Modals  */}
       {createModalOpen && (
         <TaskModal onClose={() => setCreateModalOpen(false)} />
       )}
       {editTask && (
-        <TaskModal task={editTask} onClose={() => setEditTask(null)} />
+        <TaskModal
+          task={editTask}
+          onClose={() => setEditTask(null)}
+        />
       )}
       {detailTask && (
         <TaskDetailModal
           task={detailTask}
-          onClose={() => setDetailTask(null)}
-          onEdit={(t) => { setDetailTask(null); setEditTask(t); }}
+          onClose={handleDetailClose}
+          onEdit={handleEditTask}
           onDelete={handleDeleteTask}
         />
       )}

@@ -1,0 +1,79 @@
+@reference "../../index.css";
+
+@layer components {
+  .analytics-page {
+    @apply p-6 lg:p-8;
+  }
+
+  .analytics-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6;
+  }
+
+  .analytics-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .analytics-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .analytics-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  body.dark .analytics-subtitle {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .export-btn {
+    @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .export-btn:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .export-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .analytics-filters {
+    @apply mb-6;
+  }
+
+  .analytics-grid {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6;
+  }
+
+  .analytics-grid-full {
+    grid-column: 1 / -1;
+  }
+
+  .analytics-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 400px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .analytics-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

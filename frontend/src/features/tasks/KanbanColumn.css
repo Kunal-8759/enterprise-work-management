@@ -6,7 +6,8 @@
     border-radius: var(--radius-xl);
     background-color: var(--color-bg-secondary);
     padding: 1rem;
-    min-height: 500px;
+    min-height: 68vh; /* ensures the board has some height even if columns are empty */
+    max-height: 68vh;   /* column never grows beyond this */
     transition: background-color var(--transition-fast);
   }
 
@@ -68,7 +69,9 @@
   }
 
   .kanban-column-body {
-    @apply flex flex-col gap-2 flex-1;
+    @apply flex flex-col gap-2;
+    overflow-y: auto;  /* scroll appears when tasks exceed max-height */
+    min-height: 120px; /* so empty columns don't collapse */
   }
 
   .kanban-column-empty {

@@ -1,0 +1,132 @@
+@reference "../../index.css";
+
+@layer components {
+  .project-metrics {
+    @apply flex flex-col gap-4;
+  }
+
+  .table-wrapper {
+    @apply overflow-x-auto rounded-xl;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+
+  body.dark .table-wrapper {
+    border-color: var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+  }
+
+  .metrics-table {
+    @apply w-full text-sm;
+  }
+
+  .metrics-table thead tr {
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .metrics-table thead tr {
+    border-bottom-color: var(--color-dark-border);
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .metrics-table th {
+    @apply text-left p-3;
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .metrics-table th {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .metrics-table td {
+    @apply p-3;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  body.dark .metrics-table td {
+    color: var(--color-dark-text-primary);
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  .metrics-table-row {
+    transition: background-color var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .metrics-table-row:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .metrics-table-row:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .project-name {
+    @apply font-medium;
+    color: var(--color-primary);
+  }
+
+  .progress-cell {
+    @apply flex items-center gap-2;
+  }
+
+  .progress-bar-bg {
+    @apply w-20 h-1.5 rounded-full overflow-hidden;
+    background-color: var(--color-border);
+  }
+
+  body.dark .progress-bar-bg {
+    background-color: var(--color-dark-border);
+  }
+
+  .progress-bar-fill {
+    @apply h-full rounded-full;
+    background-color: var(--color-primary);
+  }
+
+  .progress-percent {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .overdue-value {
+    color: var(--color-danger);
+    font-weight: var(--font-weight-semi);
+  }
+
+  .health-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs;
+  }
+
+  .health-badge--good {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+  }
+
+  .health-badge--at-risk {
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
+  }
+
+  .health-badge--critical {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+
+  .table-empty {
+    @apply flex items-center justify-center p-8 rounded-xl;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  body.dark .table-empty {
+    border-color: var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+    color: var(--color-dark-text-secondary);
+  }
+}

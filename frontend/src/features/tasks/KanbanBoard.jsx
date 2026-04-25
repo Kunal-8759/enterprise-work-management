@@ -44,9 +44,18 @@ const KanbanBoard = ({ tasks, onTaskClick }) => {
     if (!over) return;
 
     const taskId = active.id;
-    const newStatus = over.id;
     const validStatuses = ["todo", "in-progress", "done"];
-    if (!validStatuses.includes(newStatus)) return;
+
+    // over.id could be a column id OR another task's _id
+    // if it's a task, find which column (status) that task belongs to
+    let newStatus = over.id;
+
+    if (!validStatuses.includes(newStatus)) {
+      // over.id is a task _id — find that task's status
+      const overTask = tasks.find((t) => t._id === over.id);
+      if (!overTask) return;
+      newStatus = overTask.status;
+    }
 
     const task = tasks.find((t) => t._id === taskId);
     if (!task || task.status === newStatus) return;

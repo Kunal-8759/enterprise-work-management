@@ -71,7 +71,7 @@ export const getAllTasksService = async (query, user) => {
   };
 };
 
-export const getTaskByIdService = async (taskId) => {
+export const getTaskByIdService = async (taskId, user) => {
   const task = await findTaskById(taskId);
   if (!task) {
     return {
@@ -79,6 +79,18 @@ export const getTaskByIdService = async (taskId) => {
       success: false,
       message: "Task not found",
     };
+  }
+
+  // Employee can only view tasks assigned to them
+  if (user.role === "Employee") {
+    const isAssignee = task.assignee?._id.toString() === user._id.toString();
+    if (!isAssignee) {
+      return {
+        statusCode: StatusCodes.FORBIDDEN,
+        success: false,
+        message: "You do not have access to this task",
+      };
+    }
   }
 
   return {

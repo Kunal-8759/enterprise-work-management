@@ -1,37 +1,37 @@
-@reference "../index.css";
+@reference "../../index.css";
 
 @layer components {
-  .notfound-wrapper {
+  .unauthorized-wrapper {
     @apply min-h-screen flex items-center justify-center;
     background-color: var(--color-background);
   }
 
-  .notfound-card {
+  .unauthorized-card {
     @apply flex flex-col items-center gap-4 p-12 rounded-2xl text-center;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-card);
     border: 1px solid var(--color-border);
   }
 
-  .notfound-code {
+  .unauthorized-code {
     @apply font-bold;
     font-size: 5rem;
-    color: var(--color-primary);
+    color: var(--color-danger);
     line-height: 1;
   }
 
-  .notfound-title {
+  .unauthorized-title {
     font-size: var(--font-size-2xl);
     font-weight: 700;
     color: var(--color-text-primary);
   }
 
-  .notfound-message {
+  .unauthorized-message {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
   }
 
-  .notfound-btn {
+  .unauthorized-btn {
     @apply px-6 py-2 rounded-lg font-semibold transition-colors duration-200 cursor-pointer;
     background-color: var(--color-primary);
     color: #ffffff;
@@ -40,7 +40,7 @@
     margin-top: 8px;
   }
 
-  .notfound-btn:hover {
+  .unauthorized-btn:hover {
     background-color: var(--color-primary-hover);
   }
 }

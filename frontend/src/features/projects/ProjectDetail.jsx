@@ -19,7 +19,7 @@ import {
     clearSelectedProject,
     removeProjectMember,
 } from "../../store/slices/projectSlice.js";
-import ProjectModal from "../../components/common/ProjectModal.jsx";
+import ProjectModal from "./ProjectModal.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import { ROLES } from "../../utils/constants.js";
 import "./ProjectDetail.css";

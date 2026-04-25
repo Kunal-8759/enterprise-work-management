@@ -4,10 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import AuthLayout from "../layouts/AuthLayout.jsx";
-import { loginSchema } from "../utils/validator.js";
-import { loginUser } from "../store/slices/authSlice.js";
-import useAuth from "../hooks/useAuth.js";
+import AuthLayout from "../../components/layouts/AuthLayout.jsx";
+import { loginSchema } from "../../utils/validator.js"
+import { loginUser } from "../../store/slices/authSlice.js";
+import useAuth from "../../hooks/useAuth.js";
 
 import "./Login.css";
 

@@ -1,20 +1,20 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HealthCheck from './HealthCheck'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import ProtectedRoute from './routes/ProtectedRoute'
-import NotFound from './pages/NotFound'
+import Login from './features/auth/Login.jsx';
+import Signup from './features/auth/Signup.jsx';
+import ProtectedRoute from './routes/ProtectedRoute';
+import NotFound from './components/pages/NotFound.jsx';
 import RoleRoute from './routes/RoleRoute'
-import Unauthorized from './pages/Unauthorized'
+import Unauthorized from './components/pages/Unauthorized.jsx';
 import { useDispatch } from 'react-redux'
 import useAuth from './hooks/useAuth'
 import { useEffect } from 'react'
 import { fetchCurrentUser } from './store/slices/authSlice'
-import AppLayout from './layouts/AppLayout'
-import Dashboard from './pages/Dashboard'
-import Projects from './pages/projects/Projects'
-import ProjectDetail from './pages/projects/ProjectDetail'
+import AppLayout from './components/layouts/AppLayout.jsx';
+import Dashboard from './features/dashboard/Dashboard.jsx';
+import Projects from './features/projects/Projects.jsx';
+import ProjectDetail from './features/projects/ProjectDetail.jsx';
 
 
 // placeholder pages — will be replaced in upcoming phases
@@ -84,7 +84,7 @@ const AppInitializer = () => {
 };
 
 function App() {
-  
+
   return (
     <>
       <AppInitializer />

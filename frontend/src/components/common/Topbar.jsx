@@ -4,7 +4,7 @@ import { Bell, Sun, Moon, Menu } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import { useSelector } from "react-redux";
-import NotificationDropdown from "./NotificationDropdown.jsx";
+import NotificationDropdown from "../../features/notifications/NotificationDropdown.jsx";
 import "./Topbar.css";
 
 const pageTitles = {
@@ -70,7 +70,7 @@ const Topbar = ({ setMobileOpen }) => {
           </button>
 
           {notifOpen && (
-            <NotificationDropdown bellRef={bellRef} onClose={() => setNotifOpen(false)}/>
+            <NotificationDropdown bellRef={bellRef} onClose={() => setNotifOpen(false)} />
           )}
         </div>
 

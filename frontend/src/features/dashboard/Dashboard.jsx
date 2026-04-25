@@ -8,9 +8,9 @@ import {
   Loader2,
 } from "lucide-react";
 import "./Dashboard.css";
-import { fetchDashboardStats } from "../store/slices/dashboardSlice.js";
-import MetricCard from "../components/common/MetricCard.jsx";
-import ActivityFeed from "../components/common/ActivityFeed.jsx";
+import { fetchDashboardStats } from "../../store/slices/dashboardSlice.js";
+import MetricCard from "./MetricCard.jsx";
+import ActivityFeed from "./ActivityFeed.jsx";
 
 const Dashboard = () => {
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import { fetchProjects } from "../../store/slices/projectSlice.js";
 import KanbanBoard from "./KanbanBoard.jsx";
 import TaskListView from "./TaskListView.jsx";
 import TaskModal from "./TaskModal.jsx";
-// import TaskDetailModal from "./TaskDetailModal.jsx";
+import TaskDetailModal from "./TaskDetailModal.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import { ROLES } from "../../utils/constants.js";
 import { toast } from "react-toastify";
@@ -186,14 +186,14 @@ const Tasks = () => {
       {editTask && (
         <TaskModal task={editTask} onClose={() => setEditTask(null)} />
       )}
-      {/* {detailTask && (
+      {detailTask && (
         <TaskDetailModal
           task={detailTask}
           onClose={() => setDetailTask(null)}
           onEdit={(t) => { setDetailTask(null); setEditTask(t); }}
           onDelete={handleDeleteTask}
         />
-      )} */}
+      )}
     </div>
   );
 };

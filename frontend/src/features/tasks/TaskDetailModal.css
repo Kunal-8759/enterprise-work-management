@@ -1,0 +1,536 @@
+@reference "../../index.css";
+
+@layer components {
+
+  /* ── Container ────────────────────────────────────────────────── */
+  .detail-modal-container {
+    @apply flex flex-col w-full;
+    max-width: 900px;
+    max-height: 90vh;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+  }
+
+  body.dark .detail-modal-container {
+    background-color: var(--color-dark-surface);
+  }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .detail-modal-header {
+    @apply flex items-center justify-between flex-shrink-0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    gap: 1rem;
+  }
+
+  body.dark .detail-modal-header {
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  .detail-modal-header-left {
+    @apply flex items-center gap-2;
+  }
+
+  .detail-modal-header-right {
+    @apply flex items-center gap-2;
+  }
+
+  .detail-modal-action-btn {
+    @apply flex items-center justify-center rounded-lg;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .detail-modal-action-btn:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-modal-action-btn:hover {
+    background-color: var(--color-dark-bg-secondary);
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-modal-delete-btn:hover {
+    background-color: var(--color-danger-light) !important;
+    color: var(--color-danger) !important;
+  }
+
+  /* ── Loader ───────────────────────────────────────────────────── */
+  .detail-modal-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 300px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .detail-modal-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Body ─────────────────────────────────────────────────────── */
+  .detail-modal-body {
+    @apply flex flex-1 overflow-hidden;
+  }
+
+  /* ── Left Panel ───────────────────────────────────────────────── */
+  .detail-modal-left {
+    @apply flex flex-col gap-5 overflow-y-auto;
+    flex: 1.4;
+    padding: 1.5rem;
+    border-right: 1px solid var(--color-border);
+  }
+
+  body.dark .detail-modal-left {
+    border-right-color: var(--color-dark-border);
+  }
+
+  .detail-modal-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  body.dark .detail-modal-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-modal-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-loose);
+  }
+
+  body.dark .detail-modal-desc {
+    color: var(--color-dark-text-secondary);
+  }
+
+  /* ── Meta Grid ────────────────────────────────────────────────── */
+  .detail-modal-meta-grid {
+    @apply grid gap-3;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-modal-meta-item {
+    @apply flex flex-col gap-1;
+    padding: 0.75rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+  }
+
+  body.dark .detail-modal-meta-item {
+    background-color: var(--color-dark-bg-secondary);
+    border-color: var(--color-dark-border);
+  }
+
+  .detail-modal-meta-label {
+    @apply flex items-center gap-1;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  body.dark .detail-modal-meta-label {
+    color: var(--color-dark-text-muted);
+  }
+
+  .detail-modal-meta-value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-modal-meta-value {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-modal-meta-muted {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .detail-modal-overdue {
+    color: var(--color-danger) !important;
+    font-weight: var(--font-weight-semi) !important;
+  }
+
+  .detail-modal-assignee {
+    @apply flex items-center gap-2;
+  }
+
+  .detail-modal-avatar {
+    @apply flex items-center justify-center font-semibold flex-shrink-0;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 10px;
+  }
+
+  /* ── Section ──────────────────────────────────────────────────── */
+  .detail-modal-section {
+    @apply flex flex-col gap-3;
+  }
+
+  .detail-modal-section-header {
+    @apply flex items-center gap-3;
+  }
+
+  .detail-modal-section-title {
+    @apply flex items-center gap-2 flex-1;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .detail-modal-section-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .detail-modal-empty-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    padding: 0.5rem 0;
+  }
+
+  /* ── Attach Button ────────────────────────────────────────────── */
+  .detail-modal-attach-btn {
+    @apply flex items-center gap-1.5 font-medium;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    border: 1px solid var(--color-border);
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .detail-modal-attach-btn:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .detail-modal-attach-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* ── Attachments ──────────────────────────────────────────────── */
+  .detail-modal-attachments {
+    @apply flex flex-col gap-2;
+  }
+
+  .attachment-item {
+    @apply flex items-center gap-3;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    transition: border-color var(--transition-fast);
+  }
+
+  body.dark .attachment-item {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .attachment-item:hover {
+    border-color: var(--color-primary);
+  }
+
+  .attachment-preview {
+    @apply flex-shrink-0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .attachment-img {
+    @apply w-full h-full;
+    object-fit: cover;
+  }
+
+  .attachment-icon-wrapper {
+    @apply flex items-center justify-center flex-shrink-0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .attachment-info {
+    @apply flex flex-col flex-1 overflow-hidden;
+  }
+
+  .attachment-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.dark .attachment-name {
+    color: var(--color-dark-text-primary);
+  }
+
+  .attachment-date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .attachment-actions {
+    @apply flex items-center gap-1 flex-shrink-0;
+  }
+
+  .attachment-btn {
+    @apply flex items-center justify-center rounded-md;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .attachment-btn:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .attachment-btn-delete:hover {
+    background-color: var(--color-danger-light) !important;
+    color: var(--color-danger) !important;
+  }
+
+  /* ── Right Panel — Comments ───────────────────────────────────── */
+  .detail-modal-right {
+    @apply flex flex-col;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .detail-modal-right .detail-modal-section-header {
+    padding: 1.25rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  body.dark .detail-modal-right .detail-modal-section-header {
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  .detail-modal-comments {
+    @apply flex flex-col gap-3 overflow-y-auto flex-1;
+    padding: 1rem 1.25rem;
+  }
+
+  /* ── Comment Item ─────────────────────────────────────────────── */
+  .comment-item {
+    @apply flex items-start gap-3;
+  }
+
+  .comment-avatar {
+    @apply flex items-center justify-center font-semibold flex-shrink-0;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+  }
+
+  .comment-content {
+    @apply flex flex-col gap-1 flex-1;
+  }
+
+  .comment-header {
+    @apply flex items-center gap-2;
+  }
+
+  .comment-author {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .comment-author {
+    color: var(--color-dark-text-primary);
+  }
+
+  .comment-time {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    flex: 1;
+  }
+
+  .comment-delete {
+    @apply flex items-center justify-center rounded opacity-0;
+    width: 22px;
+    height: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast),
+      opacity var(--transition-fast);
+  }
+
+  .comment-item:hover .comment-delete {
+    opacity: 1;
+  }
+
+  .comment-delete:hover {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+
+  .comment-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-normal);
+    word-break: break-word;
+  }
+
+  body.dark .comment-text {
+    color: var(--color-dark-text-secondary);
+  }
+
+  /* ── Comment Input ────────────────────────────────────────────── */
+  .comment-input-wrapper {
+    @apply flex items-start gap-3 flex-shrink-0;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+
+  body.dark .comment-input-wrapper {
+    border-top-color: var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+  }
+
+  .comment-input-avatar {
+    @apply flex items-center justify-center font-semibold flex-shrink-0;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: var(--font-size-xs);
+    margin-top: 2px;
+  }
+
+  .comment-input-box {
+    @apply flex items-end gap-2 flex-1;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--color-border);
+    background-color: var(--color-bg-secondary);
+    transition: border-color var(--transition-fast);
+  }
+
+  .comment-input-box:focus-within {
+    border-color: var(--color-primary);
+  }
+
+  body.dark .comment-input-box {
+    background-color: var(--color-dark-bg-secondary);
+    border-color: var(--color-dark-border);
+  }
+
+  .comment-textarea {
+    @apply flex-1 outline-none bg-transparent resize-none;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    line-height: var(--line-height-normal);
+    border: none;
+    min-height: 40px;
+    max-height: 100px;
+  }
+
+  body.dark .comment-textarea {
+    color: var(--color-dark-text-primary);
+  }
+
+  .comment-textarea::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .comment-send-btn {
+    @apply flex items-center justify-center rounded-lg flex-shrink-0;
+    width: 32px;
+    height: 32px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .comment-send-btn:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .comment-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── Mobile ───────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .detail-modal-container {
+      max-width: 100%;
+      max-height: 100vh;
+      border-radius: 0;
+    }
+
+    .detail-modal-body {
+      flex-direction: column;
+    }
+
+    .detail-modal-left {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+      flex: none;
+    }
+
+    .detail-modal-meta-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-modal-right {
+      min-height: 300px;
+    }
+  }
+}

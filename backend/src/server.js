@@ -1,17 +1,19 @@
-import express from 'express';
+
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import cors from 'cors';
 import connectDB from './config/dbConfig.js';
-
 import authRoutes from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import projectRoutes from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import taskRoutes from "./routes/taskRoute.js";
+import cloudinary from './config/cloudinary.js';
 
 // Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

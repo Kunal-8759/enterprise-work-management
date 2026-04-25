@@ -18,6 +18,7 @@ import ProjectDetail from './features/projects/ProjectDetail.jsx';
 import Tasks from './features/tasks/Tasks.jsx';
 import Users from './features/users/Users.jsx';
 import Settings from './features/settings/Setting.jsx';
+import TaskDetailPage from './features/tasks/TaskDetailPage.jsx';
 
 
 // placeholder pages — will be replaced in upcoming phases
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
           { path: "/projects", element: <Projects /> },
           { path: "/projects/:id", element: <ProjectDetail /> },
           { path: "/tasks", element: <Tasks /> },
+          { path: "/tasks/:id", element: <TaskDetailPage /> },
           { path: "/analytics", element: <Analytics /> },
           { path: "/settings", element: <Settings /> },
           {

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import {findUserByEmail,findUserById,createUser} from "../repositories/authRepository.js";
+import {findUserByEmail,findUserById,createUser, updateUserById} from "../repositories/authRepository.js";
 import jwt from "jsonwebtoken";
 import { generateAccessToken } from "../utils/generateToken.js";
 

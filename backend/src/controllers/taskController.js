@@ -7,7 +7,8 @@ import {
   deleteTaskService,
   addCommentService,
   deleteCommentService,
-  uploadAttachmentService
+  uploadAttachmentService,
+  deleteAttachmentService
 } from "../services/taskService.js";
 
 export const createTask = async (req, res) => {
@@ -17,7 +18,7 @@ export const createTask = async (req, res) => {
 };
 
 export const getAllTasks = async (req, res) => {
-  const result = await getAllTasksService(req.query);
+  const result = await getAllTasksService(req.query, req.user);
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };
@@ -56,4 +57,14 @@ export const uploadAttachment = async (req, res) => {
     const result = await uploadAttachmentService(req.params.id, req.file, req.user);
     if (!result.success) return sendError(res, result.message, result.statusCode);
     return sendSuccess(res, result.message, result.data, result.statusCode);
+};
+
+export const deleteAttachment = async (req, res) => {
+  const result = await deleteAttachmentService(
+    req.params.id,
+    req.params.attachmentId,
+    req.user
+  );
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
 };

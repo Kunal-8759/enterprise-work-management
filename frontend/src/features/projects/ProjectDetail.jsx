@@ -10,6 +10,8 @@ import {
     Loader2,
     UserPlus,
     UserMinus,
+    CheckSquare,
+    Plus,
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
@@ -23,6 +25,9 @@ import ProjectModal from "./ProjectModal.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import { ROLES } from "../../utils/constants.js";
 import "./ProjectDetail.css";
+import KanbanBoard from "../tasks/KanbanBoard.jsx";
+import TaskModal from "../tasks/taskModal.jsx";
+import { fetchTasks } from "../../store/slices/taskSlice.js";
 
 const statusConfig = {
     planning: { label: "Planning", className: "status-planning" },
@@ -46,6 +51,16 @@ const ProjectDetail = () => {
         (state) => state.projects
     );
     const [editModalOpen, setEditModalOpen] = useState(false);
+
+    const { tasks } = useSelector((state) => state.tasks);
+    const [createTaskOpen, setCreateTaskOpen] = useState(false);
+    const [editTask, setEditTask] = useState(null);
+
+    const projectTasks = tasks.filter((t) => (t.project?._id || t.project) === id);
+
+    useEffect(() => {
+        dispatch(fetchTasks({ project: id }));
+    }, [dispatch, id]);
 
     useEffect(() => {
         dispatch(fetchProjectById(id));
@@ -191,6 +206,42 @@ const ProjectDetail = () => {
                     ))}
                 </div>
             </div>
+
+            {/* ── Tasks Kanban ──────────────────────────────────────────── */}
+            <div className="detail-section">
+                <div className="detail-section-header">
+                    <h2 className="detail-section-title">
+                        <CheckSquare size={18} />
+                        Tasks ({projectTasks.length})
+                    </h2>
+                    <button
+                        className="btn-create"
+                        onClick={() => setCreateTaskOpen(true)}
+                    >
+                        <Plus size={16} />
+                        New Task
+                    </button>
+                </div>
+                <KanbanBoard
+                    tasks={projectTasks}
+                    onTaskClick={() => { }}
+                    onEditTask={setEditTask}
+                />
+            </div>
+
+            {createTaskOpen && (
+                <TaskModal
+                    defaultProjectId={id}
+                    onClose={() => setCreateTaskOpen(false)}
+                />
+            )}
+
+            {editTask && (
+                <TaskModal
+                    task={editTask}
+                    onClose={() => setEditTask(null)}
+                />
+            )}
 
             {/*  Edit Modal  */}
             {editModalOpen && (

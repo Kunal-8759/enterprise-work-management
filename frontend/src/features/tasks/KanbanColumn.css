@@ -1,0 +1,89 @@
+@reference "../../index.css";
+
+@layer components {
+  .kanban-column {
+    @apply flex flex-col gap-3;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg-secondary);
+    padding: 1rem;
+    min-height: 500px;
+    transition: background-color var(--transition-fast);
+  }
+
+  body.dark .kanban-column {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .kanban-column-over {
+    background-color: var(--color-primary-light);
+  }
+
+  body.dark .kanban-column-over {
+    background-color: rgba(5, 150, 105, 0.08);
+  }
+
+  .kanban-column-header {
+    @apply flex items-center justify-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .kanban-column-header-left {
+    @apply flex items-center gap-2;
+  }
+
+  .kanban-col-dot {
+    @apply block rounded-full flex-shrink-0;
+    width: 10px;
+    height: 10px;
+  }
+
+  .col-dot-todo { background-color: var(--color-text-muted); }
+  .col-dot-inprogress { background-color: var(--color-warning); }
+  .col-dot-done { background-color: var(--color-success); }
+
+  .kanban-column-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .kanban-column-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .kanban-column-count {
+    @apply flex items-center justify-center font-medium;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+  }
+
+  body.dark .kanban-column-count {
+    background-color: var(--color-dark-border);
+    color: var(--color-dark-text-secondary);
+  }
+
+  .kanban-column-body {
+    @apply flex flex-col gap-2 flex-1;
+  }
+
+  .kanban-column-empty {
+    @apply flex items-center justify-center flex-1;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    min-height: 120px;
+  }
+
+  body.dark .kanban-column-empty {
+    border-color: var(--color-dark-border);
+  }
+
+  .kanban-empty-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}

@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { getAllUsersService, updateUserRoleService, updateUserStatusService } from "../services/userService.js";
 import { sendSuccess, sendError } from "../utils/responseHandler.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -23,4 +24,22 @@ export const getUserByEmail = async (req, res) => {
     } catch (error) {
         return sendError(res, error.message, StatusCodes.INTERNAL_SERVER_ERROR);
     }
+};
+
+export const getAllUsers = async (req, res) => {
+  const result = await getAllUsersService();
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
+};
+
+export const updateUserRole = async (req, res) => {
+  const result = await updateUserRoleService(req.params.id, req.body.role, req.user);
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
+};
+
+export const updateUserStatus = async (req, res) => {
+  const result = await updateUserStatusService(req.params.id, req.body.status, req.user);
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
 };

@@ -1,0 +1,183 @@
+@reference "../../index.css";
+
+@layer components {
+  .task-list-wrapper {
+    @apply w-full overflow-x-auto;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-xs);
+  }
+
+  body.dark .task-list-wrapper {
+    border-color: var(--color-dark-border);
+  }
+
+  .task-list-table {
+    @apply w-full border-collapse;
+    background-color: var(--color-surface);
+  }
+
+  body.dark .task-list-table {
+    background-color: var(--color-dark-surface);
+  }
+
+  .task-list-head {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  body.dark .task-list-head {
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  .task-list-th {
+    @apply text-left font-medium;
+    padding: 0.875rem 1rem;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .task-list-th {
+    background-color: var(--color-dark-bg-secondary);
+    color: var(--color-dark-text-secondary);
+  }
+
+  .task-list-row {
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .task-list-row:last-child {
+    border-bottom: none;
+  }
+
+  .task-list-row:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .task-list-row {
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  body.dark .task-list-row:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .task-list-td {
+    padding: 0.875rem 1rem;
+    font-size: var(--font-size-sm);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .task-list-title {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body.dark .task-list-title {
+    color: var(--color-dark-text-primary);
+  }
+
+  .task-list-secondary {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  body.dark .task-list-secondary {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .task-list-assignee {
+    @apply flex items-center gap-2;
+  }
+
+  .task-list-avatar {
+    @apply flex items-center justify-center font-semibold flex-shrink-0;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 10px;
+  }
+
+  .task-list-date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .task-list-date-overdue {
+    color: var(--color-danger);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Status badges */
+  .task-status-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full font-medium;
+    font-size: var(--font-size-xs);
+  }
+
+  .task-status-todo {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .task-status-in-progress {
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
+  }
+
+  .task-status-done {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+  }
+
+  /* Actions */
+  .task-list-actions {
+    @apply flex items-center gap-1;
+  }
+
+  .task-list-btn {
+    @apply flex items-center justify-center rounded-md;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .task-list-btn-edit {
+    color: var(--color-text-muted);
+  }
+
+  .task-list-btn-edit:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .task-list-btn-delete {
+    color: var(--color-text-muted);
+  }
+
+  .task-list-btn-delete:hover {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+
+  .list-empty {
+    @apply flex items-center justify-center;
+    min-height: 300px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}

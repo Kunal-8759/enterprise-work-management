@@ -8,6 +8,7 @@ import {
   addComment,
   deleteComment,
   uploadAttachment,
+  deleteAttachment,
 } from "../controllers/taskController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/uploadMiddleware.js";
@@ -24,5 +25,6 @@ router.delete("/:id", deleteTask);
 router.post("/:id/comments", addComment);
 router.delete("/:id/comments/:commentId", deleteComment);
 router.post("/:id/attachments", upload.single("file"), uploadAttachment);
+router.delete("/:id/attachments/:attachmentId", deleteAttachment);
 
 export default router;

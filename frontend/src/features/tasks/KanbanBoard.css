@@ -1,0 +1,26 @@
+@reference "../../index.css";
+
+@layer components {
+  .kanban-board {
+    @apply grid gap-4;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    .kanban-board {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .kanban-board {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kanban-drag-overlay {
+    transform: rotate(2deg);
+    box-shadow: var(--shadow-xl);
+  }
+}

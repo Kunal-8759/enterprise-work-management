@@ -8,6 +8,7 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import projectRoutes from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
+import taskRoutes from "./routes/taskRoute.js";
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes);
 
 
 // Health check endpoint

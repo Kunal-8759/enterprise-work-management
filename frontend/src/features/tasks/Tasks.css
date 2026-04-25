@@ -1,0 +1,118 @@
+@reference "../../index.css";
+
+@layer components {
+  .tasks-page {
+    @apply flex flex-col gap-6;
+  }
+
+  .tasks-loader {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 400px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .tasks-loader-icon {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .tasks-header {
+    @apply flex items-center justify-between gap-4;
+  }
+
+  .tasks-count {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  body.dark .tasks-count {
+    color: var(--color-dark-text-secondary);
+  }
+
+  .tasks-header-right {
+    @apply flex items-center gap-3;
+  }
+
+  /* ── View Toggle ──────────────────────────────────────────────── */
+  .view-toggle {
+    @apply flex items-center;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+
+  body.dark .view-toggle {
+    border-color: var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+  }
+
+  .view-toggle-btn {
+    @apply flex items-center justify-center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .view-toggle-btn:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .view-toggle-btn:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .view-toggle-active {
+    background-color: var(--color-primary) !important;
+    color: #ffffff !important;
+  }
+
+  /* ── Filters ──────────────────────────────────────────────────── */
+  .tasks-filters {
+    @apply flex items-center gap-3 flex-wrap;
+  }
+
+  .tasks-search {
+    flex: 1;
+    min-width: 200px;
+    max-width: 320px;
+  }
+
+  .tasks-filter-select {
+    width: auto;
+    min-width: 140px;
+  }
+
+  .tasks-clear-filters {
+    @apply font-medium;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-border);
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .tasks-clear-filters:hover {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+  }
+}

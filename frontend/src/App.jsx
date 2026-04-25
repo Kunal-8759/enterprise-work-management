@@ -15,13 +15,13 @@ import AppLayout from './components/layouts/AppLayout.jsx';
 import Dashboard from './features/dashboard/Dashboard.jsx';
 import Projects from './features/projects/Projects.jsx';
 import ProjectDetail from './features/projects/ProjectDetail.jsx';
+import Tasks from './features/tasks/Tasks.jsx';
+import Users from './features/users/Users.jsx';
 
 
 // placeholder pages — will be replaced in upcoming phases
-const Tasks = () => <div style={{ padding: "2rem", color: "#111" }}>Tasks</div>;
 const Analytics = () => <div style={{ padding: "2rem", color: "#111" }}>Analytics</div>;
 const Settings = () => <div style={{ padding: "2rem", color: "#111" }}>Settings</div>;
-const Users = () => <div style={{ padding: "2rem", color: "#111" }}>User Management</div>;
 
 
 const router = createBrowserRouter([

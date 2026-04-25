@@ -1,42 +1,53 @@
-import Project from "../models/Project.js";
+import Task from "../models/Task.js";
 
-export const createProject = async (projectData) => {
-  return await Project.create(projectData);
+export const createTask = async (taskData) => {
+  return await Task.create(taskData);
 };
 
-export const findAllProjects = async (filter = {}) => {
-  return await Project.find(filter)
+export const findAllTasks = async (filter = {}) => {
+  return await Task.find(filter)
+    .populate("assignee", "name email role")
     .populate("createdBy", "name email role")
-    .populate("members", "name email role")
+    .populate("project", "title status")
     .sort({ createdAt: -1 });
 };
 
-export const findProjectById = async (id) => {
-  return await Project.findById(id)
+export const findTaskById = async (id) => {
+  return await Task.findById(id)
+    .populate("assignee", "name email role")
     .populate("createdBy", "name email role")
-    .populate("members", "name email role");
+    .populate("project", "title status")
+    .populate("comments.commentedBy", "name email");
 };
 
-export const updateProjectById = async (id, updateData) => {
-  return await Project.findByIdAndUpdate(id, updateData, { new: true });
+export const updateTaskById = async (id, updateData) => {
+  return await Task.findByIdAndUpdate(id, updateData, { new: true });
 };
 
-export const deleteProjectById = async (id) => {
-  return await Project.findByIdAndDelete(id);
+export const deleteTaskById = async (id) => {
+  return await Task.findByIdAndDelete(id);
 };
 
-export const addMemberToProject = async (projectId, userId) => {
-  return await Project.findByIdAndUpdate(
-    projectId,
-    { $addToSet: { members: userId } },
+export const addCommentToTask = async (taskId, comment) => {
+  return await Task.findByIdAndUpdate(
+    taskId,
+    { $push: { comments: comment } },
+    { new: true }
+  ).populate("comments.commentedBy", "name email");
+};
+
+export const deleteCommentFromTask = async (taskId, commentId) => {
+  return await Task.findByIdAndUpdate(
+    taskId,
+    { $pull: { comments: { _id: commentId } } },
     { new: true }
   );
 };
 
-export const removeMemberFromProject = async (projectId, userId) => {
-  return await Project.findByIdAndUpdate(
-    projectId,
-    { $pull: { members: userId } },
+export const removeAttachmentFromTask = async (taskId, attachmentId) => {
+  return await Task.findByIdAndUpdate(
+    taskId,
+    { $pull: { attachments: { _id: attachmentId } } },
     { new: true }
   );
 };

@@ -7,6 +7,7 @@ import {
   deleteTaskById,
   addCommentToTask,
   deleteCommentFromTask,
+  removeAttachmentFromTask,
 } from "../repositories/taskRepository.js";
 import { findProjectById } from "../repositories/projectRepository.js";
 import { createNotificationService } from "./notificationService.js";
@@ -43,13 +44,22 @@ export const createTaskService = async (taskData, userId) => {
   };
 };
 
-export const getAllTasksService = async (query) => {
+export const getAllTasksService = async (query, user) => {
   const filter = {};
+
+  // Employee only sees their own assigned tasks
+  if (user.role === "Employee") {
+    filter.assignee = user._id;
+  }
+
   if (query.project) filter.project = query.project;
-  if (query.assignee) filter.assignee = query.assignee;
   if (query.status) filter.status = query.status;
-  if (query.type) filter.type = query.type;
   if (query.priority) filter.priority = query.priority;
+
+  // assignee filter only for Admin and Manager
+  if (query.assignee && user.role !== "Employee") {
+    filter.assignee = query.assignee;
+  }
 
   const tasks = await findAllTasks(filter);
 
@@ -89,34 +99,25 @@ export const updateTaskService = async (taskId, updateData, user) => {
     };
   }
 
-  const isCreator = task.createdBy._id.toString() === user._id.toString();
+  const isAdmin = user.role === "Admin";
+  const isManager = user.role === "Manager";
   const isAssignee = task.assignee?._id.toString() === user._id.toString();
 
-  if (user.role !== "Admin" && !isCreator && !isAssignee) {
+  // Employee can only update their own assigned tasks
+  if (!isAdmin && !isManager && !isAssignee) {
     return {
       statusCode: StatusCodes.FORBIDDEN,
       success: false,
-      message: "Only task creator, assignee or Admin can update this task",
+      message: "You can only update tasks assigned to you",
     };
   }
 
-  const updated = await updateTaskById(taskId, updateData);
-
-   // notify creator when assignee changes status
-  if (
-    updateData.status &&
-    updateData.status !== task.status &&
-    task.createdBy._id.toString() !== user._id.toString()
-  ) {
-    await createNotificationService({
-      recipient: task.createdBy._id,
-      sender: user._id,
-      type: "task_status_changed",
-      message: `Task "${task.title}" status changed to ${updateData.status}`,
-      reference: task._id,
-      referenceModel: "Task",
-    });
+  // Employee cannot change assignee
+  if (user.role === "Employee" && updateData.assignee) {
+    delete updateData.assignee;
   }
+
+  const updated = await updateTaskById(taskId, updateData);
 
   return {
     statusCode: StatusCodes.OK,
@@ -125,7 +126,6 @@ export const updateTaskService = async (taskId, updateData, user) => {
     data: { task: updated },
   };
 };
-
 export const deleteTaskService = async (taskId, user) => {
   const task = await findTaskById(taskId);
   if (!task) {
@@ -136,12 +136,12 @@ export const deleteTaskService = async (taskId, user) => {
     };
   }
 
-  const isCreator = task.createdBy._id.toString() === user._id.toString();
-  if (user.role !== "Admin" && !isCreator) {
+  // only Admin can delete
+  if (user.role !== "Admin") {
     return {
       statusCode: StatusCodes.FORBIDDEN,
       success: false,
-      message: "Only task creator or Admin can delete this task",
+      message: "Only Admin can delete tasks",
     };
   }
 
@@ -264,4 +264,47 @@ export const uploadAttachmentService = async (taskId, file, user) => {
         message: "File uploaded successfully",
         data: { attachments: updated.attachments },
     };
+};
+
+export const deleteAttachmentService = async (taskId, attachmentId, user) => {
+  const task = await findTaskById(taskId);
+  if (!task) {
+    return {
+      statusCode: StatusCodes.NOT_FOUND,
+      success: false,
+      message: "Task not found",
+    };
+  }
+
+  const attachment = task.attachments.id(attachmentId);
+  if (!attachment) {
+    return {
+      statusCode: StatusCodes.NOT_FOUND,
+      success: false,
+      message: "Attachment not found",
+    };
+  }
+
+  // delete from cloudinary
+  const publicId = attachment.filePath
+    .split("/")
+    .slice(-2)
+    .join("/")
+    .split(".")[0];
+
+  try {
+    await cloudinary.uploader.destroy(publicId, { resource_type: "auto" });
+  } catch {
+    // log but don't block deletion
+    console.error("Cloudinary delete failed for:", publicId);
+  }
+
+  const updated = await removeAttachmentFromTaskk(taskId, attachmentId);
+
+  return {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Attachment deleted successfully",
+    data: { attachments: updated.attachments },
+  };
 };

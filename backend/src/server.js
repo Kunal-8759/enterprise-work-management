@@ -14,10 +14,17 @@ import taskRoutes from "./routes/taskRoute.js";
 import cloudinary from './config/cloudinary.js';
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 
+import { createServer } from "http";
+import { initSocket } from "./socket/socket.js";
+
 // Load environment variables
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize Socket.IO
+const httpServer = createServer(app);
+initSocket(httpServer);
 
 // Middleware
 app.use(cors());
@@ -57,7 +64,7 @@ app.get('/', (req, res) => {
 
 
 // Start server
-app.listen(PORT,async() => {
+httpServer.listen(PORT,async() => {
   try{
     console.log(`Server is running on port ${PORT}`);
     console.log(`Health check available at http://localhost:${PORT}/api/health`);

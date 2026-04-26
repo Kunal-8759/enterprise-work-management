@@ -19,6 +19,7 @@ import Tasks from './features/tasks/Tasks.jsx';
 import Users from './features/users/Users.jsx';
 import Settings from './features/settings/Setting.jsx';
 import Analytics from './features/analytics/Analytics.jsx';
+import useSocket from './socket/useSocket.js';
 
 
 // placeholder pages — will be replaced in upcoming phases
@@ -58,6 +59,8 @@ const router = createBrowserRouter([
 const AppInitializer = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, userLoading } = useAuth();
+
+  useSocket();
 
   useEffect(() => {
     if (isAuthenticated) {

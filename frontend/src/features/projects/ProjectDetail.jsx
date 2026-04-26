@@ -211,7 +211,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* ── Tasks Kanban ──────────────────────────────────────────── */}
-            {/* <div className="detail-section">
+            <div className="detail-section">
                 <div className="detail-section-header">
                     <h2 className="detail-section-title">
                         <CheckSquare size={18} />
@@ -230,7 +230,7 @@ const ProjectDetail = () => {
                     onTaskClick={() => { }}
                     onEditTask={setEditTask}
                 />
-            </div> */}
+            </div>
 
             {createTaskOpen && (
                 <TaskModal

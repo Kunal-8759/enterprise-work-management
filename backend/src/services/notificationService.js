@@ -7,6 +7,8 @@ import {
   markAllNotificationsAsRead,
   deleteNotificationById,
 } from "../repositories/notificationRepository.js";
+import { emitNotification } from "../socket/socketEmitter.js";
+import Notification from "../models/Notification.js";
 
 export const createNotificationService = async ({
   recipient,
@@ -27,6 +29,13 @@ export const createNotificationService = async ({
     reference,
     referenceModel,
   });
+
+  // populate sender before emitting
+  const populated = await Notification.findById(notification._id)
+    .populate("sender", "name email");
+
+  // emit real-time to recipient
+  emitNotification(recipient.toString(), populated);
 
   return notification;
 };

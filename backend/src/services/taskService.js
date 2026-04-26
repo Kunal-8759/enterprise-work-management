@@ -11,6 +11,7 @@ import {
 } from "../repositories/taskRepository.js";
 import { findProjectById } from "../repositories/projectRepository.js";
 import { createNotificationService } from "./notificationService.js";
+import { emitTaskStatusUpdate } from "../socket/socketEmitter.js";
 
 export const createTaskService = async (taskData, userId) => {
   const project = await findProjectById(taskData.project);
@@ -130,6 +131,32 @@ export const updateTaskService = async (taskId, updateData, user) => {
   }
 
   const updated = await updateTaskById(taskId, updateData);
+
+  // emit status change to all project members for real-time board update
+  if (updateData.status && updateData.status !== task.status) {
+    const project = await findProjectById(task.project);
+    if (project?.members?.length > 0) {
+      const memberIds = project.members.map(m => m._id || m);
+      emitTaskStatusUpdate(
+        memberIds,  // Pass array of IDs, not user objects
+        taskId,
+        updateData.status,
+        user._id
+      );
+    }
+
+    // notify task creator
+    if (task.createdBy._id.toString() !== user._id.toString()) {
+      await createNotificationService({
+        recipient: task.createdBy._id,
+        sender: user._id,
+        type: "task_status_changed",
+        message: `Task "${task.title}" status changed to ${updateData.status}`,
+        reference: task._id,
+        referenceModel: "Task",
+      });
+    }
+  }
 
   return {
     statusCode: StatusCodes.OK,

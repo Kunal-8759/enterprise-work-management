@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/api.js";
+import { disconnectSocket } from "../../socket/socket.js";
 
 //  Async Thunks for authentication actions
 export const loginUser = createAsyncThunk(
@@ -147,6 +148,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.loading = false;
             state.error = null;
+            disconnectSocket();// Disconnect socket on logout
         })
 
         // Fetch Current User cases

@@ -1,14 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { X, Search, Loader2 } from "lucide-react";
+import { X } from "lucide-react";
 import * as Yup from "yup";
-import { useDebouncedCallback } from "use-debounce";
 import { createTask, updateTask } from "../../store/slices/taskSlice.js";
 import { fetchProjects } from "../../store/slices/projectSlice.js";
-import { searchUserByEmail, clearSearchedUser } from "../../store/slices/userSlice.js";
 import useAuth from "../../hooks/useAuth.js";
 import { ROLES } from "../../utils/constants.js";
 import "./TaskModal.css";
@@ -28,13 +26,13 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
   const isEditing = !!task;
   const { user } = useAuth();
   const { projects } = useSelector((state) => state.projects);
-  const { searchedUser, searching } = useSelector((state) => state.users);
 
   const canAssign = [ROLES.ADMIN, ROLES.MANAGER].includes(user?.role);
 
-  const [assignee, setAssignee] = useState(task?.assignee || null);
-  const [assigneeEmail, setAssigneeEmail] = useState("");
-  const searchRef = useRef(null);
+  // assignee is stored as full member object or null
+  const [assigneeId, setAssigneeId] = useState(
+    task?.assignee?._id || task?.assignee || ""
+  );
 
   const {
     register,
@@ -62,54 +60,43 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
     if (projects.length === 0) dispatch(fetchProjects());
   }, [dispatch, projects.length]);
 
+  // Close on Escape
   useEffect(() => {
-    const handleKeyDown = (e) => { if (e.key === "Escape") onClose(); };
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
+  // When project changes, reset assignee if they are no longer a member
   useEffect(() => {
-    return () => dispatch(clearSearchedUser());
-  }, [dispatch]);
-
-  // get members of selected project
-  const selectedProject = projects.find((p) => p._id === selectedProjectId);
-  const projectMembers = selectedProject?.members || [];
-
-  const debouncedSearch = useDebouncedCallback((email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email.trim())) {
-      dispatch(searchUserByEmail(email.trim()));
-    } else {
-      dispatch(clearSearchedUser());
-    }
-  }, 500);
-
-  const handleAssigneeEmailChange = (e) => {
-    setAssigneeEmail(e.target.value);
-    debouncedSearch(e.target.value);
-  };
-
-  const handleSelectAssignee = (selectedUser) => {
-    // only allow project members as assignee
-    const isMember = projectMembers.some((m) => m._id === selectedUser._id);
-    if (!isMember) {
-      toast.error("Assignee must be a member of the selected project");
+    if (!selectedProjectId) {
+      setAssigneeId("");
       return;
     }
-    setAssignee(selectedUser);
-    setAssigneeEmail("");
-    dispatch(clearSearchedUser());
-  };
+    const project = projects.find((p) => p._id === selectedProjectId);
+    if (!project) return;
+    const stillMember = project.members?.some(
+      (m) => (m._id || m) === assigneeId
+    );
+    if (!stillMember) setAssigneeId("");
+  }, [selectedProjectId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Members of the currently selected project
+  const selectedProject = projects.find((p) => p._id === selectedProjectId);
+  const projectMembers = selectedProject?.members || [];
 
   const onSubmit = async (formData) => {
     const payload = {
       ...formData,
-      ...(assignee && { assignee: assignee._id }),
+      ...(assigneeId && { assignee: assigneeId }),
     };
 
     if (isEditing) {
-      const result = await dispatch(updateTask({ id: task._id, updateData: payload }));
+      const result = await dispatch(
+        updateTask({ id: task._id, updateData: payload })
+      );
       if (updateTask.fulfilled.match(result)) {
         toast.success("Task updated successfully");
         onClose();
@@ -130,7 +117,7 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        {/* ── Header ────────────────────────────────────────────── */}
+        {/* Header */}
         <div className="modal-header">
           <h2 className="modal-title">
             {isEditing ? "Edit Task" : "New Task"}
@@ -150,7 +137,9 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
               placeholder="Task title"
               {...register("title")}
             />
-            {errors.title && <span className="input-error">{errors.title.message}</span>}
+            {errors.title && (
+              <span className="input-error">{errors.title.message}</span>
+            )}
           </div>
 
           {/* Description */}
@@ -162,7 +151,9 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
               rows={3}
               {...register("description")}
             />
-            {errors.description && <span className="input-error">{errors.description.message}</span>}
+            {errors.description && (
+              <span className="input-error">{errors.description.message}</span>
+            )}
           </div>
 
           {/* Project */}
@@ -171,13 +162,23 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
             <select
               className={`input-field ${errors.project ? "input-field-error" : ""}`}
               {...register("project")}
+              disabled={isEditing} // project cannot be changed after creation
             >
               <option value="">Select a project</option>
               {projects.map((p) => (
-                <option key={p._id} value={p._id}>{p.title}</option>
+                <option key={p._id} value={p._id}>
+                  {p.title}
+                </option>
               ))}
             </select>
-            {errors.project && <span className="input-error">{errors.project.message}</span>}
+            {errors.project && (
+              <span className="input-error">{errors.project.message}</span>
+            )}
+            {isEditing && (
+              <span className="input-hint">
+                Project cannot be changed after creation
+              </span>
+            )}
           </div>
 
           {/* Type + Priority */}
@@ -227,90 +228,63 @@ const TaskModal = ({ onClose, task = null, defaultProjectId = null }) => {
                 className={`input-field ${errors.dueDate ? "input-field-error" : ""}`}
                 {...register("dueDate")}
               />
-              {errors.dueDate && <span className="input-error">{errors.dueDate.message}</span>}
+              {errors.dueDate && (
+                <span className="input-error">{errors.dueDate.message}</span>
+              )}
             </div>
           </div>
 
-          {/* Assignee — Admin and Manager only */}
+          {/* Assignee — Admin and Manager only, chosen from project members */}
           {canAssign && (
             <div className="form-group">
               <label className="form-label">Assignee</label>
-
-              {assignee ? (
-                <div className="task-assignee-selected">
-                  <div className="task-assignee-avatar">
-                    {assignee.name?.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="task-assignee-info">
-                    <span className="task-assignee-name">{assignee.name}</span>
-                    <span className="task-assignee-email">{assignee.email}</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="task-assignee-remove"
-                    onClick={() => setAssignee(null)}
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
+              {!selectedProjectId ? (
+                <p className="task-assignee-hint">
+                  Select a project first to assign a member
+                </p>
+              ) : projectMembers.length === 0 ? (
+                <p className="task-assignee-hint">
+                  This project has no members yet
+                </p>
               ) : (
-                <div className="task-assignee-search" ref={searchRef}>
-                  {!selectedProjectId ? (
-                    <p className="task-assignee-hint">
-                      Select a project first to assign a member
-                    </p>
-                  ) : (
-                    <>
-                      <div className="member-search-input-wrapper">
-                        <Search size={16} className="member-search-icon" />
-                        <input
-                          type="email"
-                          className="member-search-input"
-                          placeholder="Search by email..."
-                          value={assigneeEmail}
-                          onChange={handleAssigneeEmailChange}
-                        />
-                        {searching && (
-                          <Loader2 size={14} className="member-search-loader" />
-                        )}
-                      </div>
-
-                      {/* Search result */}
-                      {assigneeEmail.length > 0 && !searching && (
-                        <div className="task-assignee-result">
-                          {searchedUser ? (
-                            <div
-                              className="member-dropdown-item"
-                              onClick={() => handleSelectAssignee(searchedUser)}
-                            >
-                              <div className="member-dropdown-avatar">
-                                {searchedUser.name?.charAt(0).toUpperCase()}
-                              </div>
-                              <div className="member-dropdown-info">
-                                <span className="member-dropdown-name">{searchedUser.name}</span>
-                                <span className="member-dropdown-email">{searchedUser.email}</span>
-                              </div>
-                              <span className="member-dropdown-role">{searchedUser.role}</span>
-                            </div>
-                          ) : (
-                            <p className="member-result-empty">No user found</p>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
+                <select
+                  className="input-field"
+                  value={assigneeId}
+                  onChange={(e) => setAssigneeId(e.target.value)}
+                >
+                  <option value="">— Unassigned —</option>
+                  {projectMembers.map((member) => {
+                    const id = member._id || member;
+                    const name = member.name || id;
+                    const role = member.role ? ` (${member.role})` : "";
+                    return (
+                      <option key={id} value={id}>
+                        {name}{role}
+                      </option>
+                    );
+                  })}
+                </select>
               )}
             </div>
           )}
 
           {/* Actions */}
           <div className="modal-actions">
-            <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn-submit" disabled={isSubmitting}>
+            <button type="button" className="btn-cancel" onClick={onClose}>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn-submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting
-                ? isEditing ? "Saving..." : "Creating..."
-                : isEditing ? "Save Changes" : "Create Task"}
+                ? isEditing
+                  ? "Saving..."
+                  : "Creating..."
+                : isEditing
+                ? "Save Changes"
+                : "Create Task"}
             </button>
           </div>
         </form>

@@ -21,6 +21,8 @@ export const registerSchema = Yup.object({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Confirm password is required"),
+    .required("Confirm password is required")
+    .test("passwords-match", "Passwords do not match", function(value) {
+      return value === this.parent.password;
+    }),
 });

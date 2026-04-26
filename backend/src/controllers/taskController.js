@@ -8,11 +8,12 @@ import {
   addCommentService,
   deleteCommentService,
   uploadAttachmentService,
-  deleteAttachmentService
+  deleteAttachmentService,
 } from "../services/taskService.js";
 
 export const createTask = async (req, res) => {
-  const result = await createTaskService(req.body, req.user._id);
+  // Pass full user object (not just _id) so service can check role
+  const result = await createTaskService(req.body, req.user);
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };
@@ -42,21 +43,29 @@ export const deleteTask = async (req, res) => {
 };
 
 export const addComment = async (req, res) => {
-  const result = await addCommentService(req.params.id, req.body.text, req.user._id);
+  const result = await addCommentService(
+    req.params.id,
+    req.body.text,
+    req.user._id
+  );
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };
 
 export const deleteComment = async (req, res) => {
-  const result = await deleteCommentService(req.params.id, req.params.commentId, req.user);
+  const result = await deleteCommentService(
+    req.params.id,
+    req.params.commentId,
+    req.user
+  );
   if (!result.success) return sendError(res, result.message, result.statusCode);
   return sendSuccess(res, result.message, result.data, result.statusCode);
 };
 
 export const uploadAttachment = async (req, res) => {
-    const result = await uploadAttachmentService(req.params.id, req.file, req.user);
-    if (!result.success) return sendError(res, result.message, result.statusCode);
-    return sendSuccess(res, result.message, result.data, result.statusCode);
+  const result = await uploadAttachmentService(req.params.id, req.file, req.user);
+  if (!result.success) return sendError(res, result.message, result.statusCode);
+  return sendSuccess(res, result.message, result.data, result.statusCode);
 };
 
 export const deleteAttachment = async (req, res) => {

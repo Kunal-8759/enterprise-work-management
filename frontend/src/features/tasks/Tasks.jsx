@@ -37,12 +37,15 @@ const Tasks = () => {
   const [editTask, setEditTask] = useState(null);
   const [detailTask, setDetailTask] = useState(null);
 
-  // filters
+  // Filters
   const [filterProject, setFilterProject] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ── Read taskId from query param ───────────────────────────────
+  // Only Admin and Manager can create tasks
+  const canCreateTask = [ROLES.ADMIN, ROLES.MANAGER].includes(user?.role);
+
+  // Read taskId from query param
   const taskIdFromUrl = searchParams.get("taskId");
 
   useEffect(() => {
@@ -50,35 +53,32 @@ const Tasks = () => {
     dispatch(fetchProjects());
   }, [dispatch]);
 
-  // ── Auto open modal if taskId in URL ───────────────────────────
+  // Auto open modal if taskId in URL
   useEffect(() => {
     if (taskIdFromUrl) {
       dispatch(fetchTaskById(taskIdFromUrl));
     } else {
-      // clean up selected task when no taskId in URL
       dispatch(clearSelectedTask());
       setDetailTask(null);
     }
   }, [taskIdFromUrl, dispatch]);
 
-  // ── Once task is fetched, check access and open modal ──────────
+
+  // Once task is fetched, check access and open modal
   useEffect(() => {
     if (!detailLoading && selectedTask && taskIdFromUrl) {
-      // Access control: Members(Employee and Manager) except Admin can only view tasks they created or are assigned to
-      if (user.role === ROLES.EMPLOYEE ) {
-        const isAssignee = selectedTask?.assignee?._id === user?.id;
-        const isCreator = selectedTask?.createdBy?._id === user?.id;
+      if (user.role === ROLES.EMPLOYEE) {
+        const isAssignee = selectedTask?.assignee?._id === user?._id;
+        const isCreator = selectedTask?.createdBy?._id === user?._id;
         if (!isAssignee && !isCreator) {
           navigate("/unauthorized");
           return;
         }
       }
-      // open detail modal
       setDetailTask(selectedTask);
     }
   }, [detailLoading, selectedTask, taskIdFromUrl, user, navigate]);
 
-  //  Handlers 
   const handleViewToggle = (newView) => {
     setView(newView);
     localStorage.setItem(VIEW_KEY, newView);
@@ -91,7 +91,6 @@ const Tasks = () => {
   const handleDetailClose = () => {
     setDetailTask(null);
     dispatch(clearSelectedTask());
-    // clean URL if taskId was in query param
     if (taskIdFromUrl) {
       navigate("/tasks", { replace: true });
     }
@@ -114,7 +113,7 @@ const Tasks = () => {
     }
   };
 
-  //  Frontend filtering 
+  // Frontend filtering
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       const matchesProject = filterProject
@@ -142,7 +141,7 @@ const Tasks = () => {
 
   return (
     <div className="tasks-page">
-      {/*  Header  */}
+      {/* Header */}
       <div className="tasks-header">
         <p className="tasks-count">
           {filteredTasks.length}{" "}
@@ -167,17 +166,20 @@ const Tasks = () => {
             </button>
           </div>
 
-          <button
-            className="btn-create"
-            onClick={() => setCreateModalOpen(true)}
-          >
-            <Plus size={18} />
-            New Task
-          </button>
+          {/* Only Admin and Manager can create tasks */}
+          {canCreateTask && (
+            <button
+              className="btn-create"
+              onClick={() => setCreateModalOpen(true)}
+            >
+              <Plus size={18} />
+              New Task
+            </button>
+          )}
         </div>
       </div>
 
-      {/*  Filters  */}
+      {/* Filters */}
       <div className="tasks-filters">
         <input
           type="text"
@@ -193,7 +195,9 @@ const Tasks = () => {
         >
           <option value="">All Projects</option>
           {projects.map((p) => (
-            <option key={p._id} value={p._id}>{p.title}</option>
+            <option key={p._id} value={p._id}>
+              {p.title}
+            </option>
           ))}
         </select>
         <select
@@ -220,12 +224,9 @@ const Tasks = () => {
         )}
       </div>
 
-      {/*  View  */}
+      {/* View */}
       {view === "kanban" ? (
-        <KanbanBoard
-          tasks={filteredTasks}
-          onTaskClick={handleTaskClick}
-        />
+        <KanbanBoard tasks={filteredTasks} onTaskClick={handleTaskClick} />
       ) : (
         <TaskListView
           tasks={filteredTasks}
@@ -235,15 +236,12 @@ const Tasks = () => {
         />
       )}
 
-      {/*  Modals  */}
+      {/* Modals */}
       {createModalOpen && (
         <TaskModal onClose={() => setCreateModalOpen(false)} />
       )}
       {editTask && (
-        <TaskModal
-          task={editTask}
-          onClose={() => setEditTask(null)}
-        />
+        <TaskModal task={editTask} onClose={() => setEditTask(null)} />
       )}
       {detailTask && (
         <TaskDetailModal

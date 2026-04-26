@@ -43,7 +43,7 @@ export const getAnalyticsOverviewService = async (user, query = {}) => {
     let taskFilter = {};
     let userFilter = { status: "Active" };
 
-    if (userRole === "Manager") {
+    if (userRole === "manager") {
       const managedProjects = await getProjectsByManager(userId);
       const projectIds = managedProjects.map(p => p._id);
       projectFilter = { _id: { $in: projectIds } };
@@ -51,9 +51,9 @@ export const getAnalyticsOverviewService = async (user, query = {}) => {
       
       const allMembers = managedProjects.flatMap(p => p.members || []);
       const uniqueMemberIds = [...new Set(allMembers.map(id => id.toString()))];
-      if (uniqueMemberIds.length > 0) {
-        userFilter = { _id: { $in: uniqueMemberIds }, status: "Active" };
-      }
+      userFilter = uniqueMemberIds.length > 0
+        ? { _id: { $in: uniqueMemberIds }, status: "Active" }
+        : { _id: { $in: [] } };
     }
 
     // Apply date filter if provided

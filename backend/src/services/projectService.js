@@ -12,10 +12,17 @@ import { findUserById } from "../repositories/authRepository.js";
 import { createNotificationService } from "./notificationService.js";
 
 export const createProjectService = async (projectData, userId) => {
+  // Merge creator with any members sent from the frontend.
+  // Use a Set to guarantee the creator is always included and no duplicates.
+  const incomingMembers = Array.isArray(projectData.members)
+    ? projectData.members.map((id) => id.toString())
+    : [];
+  const memberSet = new Set([userId.toString(), ...incomingMembers]);
+
   const project = await createProject({
     ...projectData,
     createdBy: userId,
-    members: [userId],
+    members: [...memberSet],
   });
 
   return {

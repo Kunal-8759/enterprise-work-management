@@ -154,6 +154,11 @@ const projectSlice = createSlice({
 
       // create
       .addCase(createProject.fulfilled, (state, action) => {
+        // Remove any existing entry with the same _id before prepending,
+        // preventing duplicate-key warnings when fetchProjects already loaded it.
+        state.projects = state.projects.filter(
+          (p) => p._id !== action.payload._id
+        );
         state.projects.unshift(action.payload);
       })
 

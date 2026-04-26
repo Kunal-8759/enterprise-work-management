@@ -179,7 +179,203 @@
     padding: 2px 8px;
     border-radius: var(--radius-full);
     background-color: var(--color-bg-secondary);
+    flex-shrink: 0;@reference "../../index.css";
+
+@layer components {
+  .task-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .task-assignee-hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    padding: 0.5rem 0;
+  }
+
+  /* Small helper text shown below a field */
+  .input-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: 4px;
+  }
+
+  .task-assignee-search {
+    @apply flex flex-col gap-2;
+  }
+
+  .task-assignee-result {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+
+  body.dark .task-assignee-result {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .task-assignee-selected {
+    @apply flex items-center gap-3;
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-primary-light);
+  }
+
+  .task-assignee-avatar {
+    @apply flex items-center justify-center font-semibold text-sm flex-shrink-0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
+
+  .task-assignee-info {
+    @apply flex flex-col flex-1;
+  }
+
+  .task-assignee-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+  }
+
+  .task-assignee-email {
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    opacity: 0.7;
+  }
+
+  .task-assignee-remove {
+    @apply flex items-center justify-center rounded-full;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: background-color var(--transition-fast);
+  }
+
+  .task-assignee-remove:hover {
+    background-color: rgba(5, 150, 105, 0.2);
+  }
+
+  /* reuse member search styles from ProjectModal */
+  .member-search-input-wrapper {
+    @apply flex items-center gap-2;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--color-border);
+    background-color: var(--color-surface);
+    transition: border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .member-search-input-wrapper:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+  }
+
+  body.dark .member-search-input-wrapper {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .member-search-icon {
+    color: var(--color-text-muted);
     flex-shrink: 0;
+  }
+
+  .member-search-input {
+    @apply flex-1 outline-none bg-transparent;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    border: none;
+  }
+
+  body.dark .member-search-input {
+    color: var(--color-dark-text-primary);
+  }
+
+  .member-search-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .member-search-loader {
+    color: var(--color-primary);
+    animation: spin 1s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .member-dropdown-item {
+    @apply flex items-center gap-3 cursor-pointer;
+    padding: 0.625rem 0.875rem;
+    transition: background-color var(--transition-fast);
+  }
+
+  .member-dropdown-item:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  body.dark .member-dropdown-item:hover {
+    background-color: var(--color-dark-bg-secondary);
+  }
+
+  .member-dropdown-avatar {
+    @apply flex items-center justify-center flex-shrink-0 font-semibold text-sm;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .member-dropdown-info {
+    @apply flex flex-col flex-1 overflow-hidden;
+  }
+
+  .member-dropdown-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  body.dark .member-dropdown-name {
+    color: var(--color-dark-text-primary);
+  }
+
+  .member-dropdown-email {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .member-dropdown-role {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-bg-secondary);
+    flex-shrink: 0;
+  }
+
+  .member-result-empty {
+    padding: 0.75rem 0.875rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
   }
 
   .member-result-empty {

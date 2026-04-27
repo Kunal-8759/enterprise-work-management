@@ -84,7 +84,7 @@ const pending = (thunk) => ({ type: thunk.pending.type });
 const fulfilled = (thunk, payload) => ({ type: thunk.fulfilled.type, payload });
 const rejected = (thunk, payload) => ({ type: thunk.rejected.type, payload });
 
-// ─── Initial State ───────────────────────────────────────────────────────────
+//  Initial State 
 
 describe("authSlice — initial state", () => {
   beforeEach(() => localStorageMock.clear());
@@ -121,7 +121,7 @@ describe("authSlice — initial state", () => {
   });
 });
 
-// ─── Synchronous Reducers ────────────────────────────────────────────────────
+//  Synchronous Reducers 
 
 describe("authSlice — synchronous reducers", () => {
   it("clearError: sets error to null", () => {
@@ -137,7 +137,7 @@ describe("authSlice — synchronous reducers", () => {
   });
 });
 
-// ─── loginUser ───────────────────────────────────────────────────────────────
+//  loginUser 
 
 describe("authSlice — loginUser", () => {
   it("pending: sets loading=true, clears error", () => {
@@ -161,7 +161,7 @@ describe("authSlice — loginUser", () => {
   });
 });
 
-// ─── registerUser ────────────────────────────────────────────────────────────
+//  registerUser 
 
 describe("authSlice — registerUser", () => {
   it("fulfilled: user is set but isAuthenticated remains false (email verification flow)", () => {
@@ -177,7 +177,7 @@ describe("authSlice — registerUser", () => {
   });
 });
 
-// ─── logoutUser ──────────────────────────────────────────────────────────────
+//  logoutUser 
 
 describe("authSlice — logoutUser", () => {
   it("fulfilled: clears user, sets isAuthenticated=false", () => {
@@ -189,7 +189,7 @@ describe("authSlice — logoutUser", () => {
   });
 });
 
-// ─── fetchCurrentUser ────────────────────────────────────────────────────────
+//  fetchCurrentUser 
 
 describe("authSlice — fetchCurrentUser", () => {
   it("pending: sets userLoading=true", () => {
@@ -213,7 +213,7 @@ describe("authSlice — fetchCurrentUser", () => {
   });
 });
 
-// ─── updateProfile ───────────────────────────────────────────────────────────
+//  updateProfile ───────────────────────────────────────────────────────────────
 
 describe("authSlice — updateProfile", () => {
   it("fulfilled: merges updated fields into existing user", () => {

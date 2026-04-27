@@ -13,7 +13,7 @@ export const initSocket = (httpServer) => {
     },
   });
 
-  // ── Auth Middleware ────────────────────────────────────────────
+  //  Auth Middleware 
   io.use(async (socket, next) => {
     try {
       const token =
@@ -38,7 +38,7 @@ export const initSocket = (httpServer) => {
     }
   });
 
-  // ── Connection Handler ─────────────────────────────────────────
+  //  Connection Handler 
   io.on("connection", (socket) => {
     const userId = socket.user._id.toString();
 

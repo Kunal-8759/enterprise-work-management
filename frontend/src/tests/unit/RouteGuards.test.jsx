@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "../../../src/routes/ProtectedRoute";
 import RoleRoute from "../../../src/routes/RoleRoute";
 
-// ─── Mock useAuth ─────────────────────────────────────────────────────────────
+//  Mock useAuth 
 // We control authentication state via this mock across tests.
 const mockUseAuth = jest.fn();
 jest.mock("../../../src/hooks/useAuth.js", () => () => mockUseAuth());
@@ -18,7 +18,7 @@ const ProtectedPage = () => <div>Protected Content</div>;
 const LoginPage    = () => <div>Login Page</div>;
 const UnauthorizedPage = () => <div>Unauthorized Page</div>;
 
-// ─── ProtectedRoute ───────────────────────────────────────────────────────────
+//  ProtectedRoute 
 
 describe("ProtectedRoute", () => {
   it("renders Outlet (child route) when user is authenticated", () => {
@@ -54,7 +54,7 @@ describe("ProtectedRoute", () => {
   });
 });
 
-// ─── RoleRoute ────────────────────────────────────────────────────────────────
+//  RoleRoute 
 
 describe("RoleRoute", () => {
   const renderRoleRoute = (user, isAuthenticated, allowedRoles) =>

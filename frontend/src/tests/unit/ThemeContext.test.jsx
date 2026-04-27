@@ -3,7 +3,7 @@ import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ThemeProvider, useTheme } from "../../../src/context/ThemeContext";
 
-// ─── Setup localStorage mock ─────────────────────────────────────────────────
+//   Setup localStorage mock  
 const localStorageMock = (() => {
   let store = {};
   return {
@@ -15,7 +15,7 @@ const localStorageMock = (() => {
 })();
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
-// ─── Consumer component for testing context ──────────────────────────────────
+//   Consumer component for testing context   
 const ThemeConsumer = () => {
   const { isDark, toggleTheme } = useTheme();
   return (
@@ -33,7 +33,7 @@ const renderWithTheme = () =>
     </ThemeProvider>
   );
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+//   Tests  
 
 describe("ThemeContext", () => {
   beforeEach(() => {

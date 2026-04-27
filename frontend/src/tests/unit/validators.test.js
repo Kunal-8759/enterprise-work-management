@@ -10,7 +10,7 @@ const validate = async (schema, data) => {
   }
 };
 
-// ─── loginSchema ──────────────────────────────────────────────────────────────
+//   loginSchema   ──────────────────────────────────────────────────────────────
 
 describe("loginSchema", () => {
   const valid = { email: "user@example.com", password: "secret123", rememberMe: false };
@@ -51,7 +51,7 @@ describe("loginSchema", () => {
   });
 });
 
-// ─── registerSchema ───────────────────────────────────────────────────────────
+//   registerSchema   
 
 describe("registerSchema", () => {
   const valid = {

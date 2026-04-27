@@ -36,7 +36,7 @@ import Tasks from "../../../src/features/tasks/Tasks.jsx";
 import ProtectedRoute from "../../../src/routes/ProtectedRoute.jsx";
 import AppLayout from "../../../src/components/layouts/AppLayout.jsx";
 
-// ─── Mock API ────────────────────────────────────────────────────────────────
+//  Mock API 
 
 const mockPost = jest.fn();
 const mockGet = jest.fn();
@@ -67,7 +67,7 @@ global.__mockPut = mockPut;
 global.__mockPatch = mockPatch;
 global.__mockDelete = mockDelete;
 
-// ─── Other mocks ─────────────────────────────────────────────────────────────
+//  Other mocks 
 
 jest.mock("../../../src/socket/socket.js", () => ({
     connectSocket: jest.fn(),
@@ -162,7 +162,7 @@ jest.mock("lucide-react", () => {
     };
 });
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
+//  Fixtures 
 
 const MOCK_USER = {
     _id: "user-1",
@@ -200,7 +200,7 @@ const MOCK_TASK = {
     attachments: [],
 };
 
-// ─── Store factories ──────────────────────────────────────────────────────────
+// Store factories 
 
 const makeGuestStore = () =>
     configureStore({
@@ -249,7 +249,7 @@ const makeAuthStore = () =>
         },
     });
 
-// ─── Render helpers ───────────────────────────────────────────────────────────
+//  Render helpers 
 
 const renderLogin = (store = makeGuestStore()) => {
     render(
@@ -292,7 +292,7 @@ const renderAuthPage = (path, store = makeAuthStore()) => {
     return { store };
 };
 
-// ─── Default API mock responses ───────────────────────────────────────────────
+//  Default API mock responses 
 
 const setupDefaultMocks = () => {
     mockPost.mockImplementation(async (url) => {
@@ -340,7 +340,7 @@ const setupDefaultMocks = () => {
     });
 };
 
-// ─── Setup / teardown ─────────────────────────────────────────────────────────
+//  Setup / teardown 
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -349,18 +349,18 @@ beforeEach(() => {
     setupDefaultMocks();
 });
 
-// ─── THE INTEGRATION TESTS ────────────────────────────────────────────────────
+//   THE INTEGRATION TESTS    
 
 describe("Integration: Login → Dashboard → Create Project → Assign Task", () => {
 
-    // ── Step 1 ──────────────────────────────────────────────────────────────────
+    //   Step 1    
 
     it("Step 1 — shows Login page at /login", async () => {
         renderLogin();
         expect(await screen.findByText(/welcome back/i)).toBeInTheDocument();
     });
 
-    // ── Step 2 ──────────────────────────────────────────────────────────────────
+    //   Step 2            
 
     it("Step 2 — shows validation errors on empty submit", async () => {
         const user = userEvent.setup();
@@ -372,7 +372,7 @@ describe("Integration: Login → Dashboard → Create Project → Assign Task", 
         expect(await screen.findByText(/email is required/i)).toBeInTheDocument();
     });
 
-    // ── Step 3 ──────────────────────────────────────────────────────────────────
+    //   Step 3    
 
     it("Step 3 — successful login redirects to /dashboard", async () => {
         const user = userEvent.setup();
@@ -403,7 +403,7 @@ describe("Integration: Login → Dashboard → Create Project → Assign Task", 
         );
     }, 15000);
 
-    // ── Step 4 ──────────────────────────────────────────────────────────────────
+    //  Step 4 
 
     it("Step 4 — failed login stores error in Redux (isAuthenticated stays false)", async () => {
         mockPost.mockImplementationOnce(async (url) => {
@@ -437,7 +437,7 @@ describe("Integration: Login → Dashboard → Create Project → Assign Task", 
         });
     });
 
-    // ── Step 5 ──────────────────────────────────────────────────────────────────
+    //  Step 5 
 
     it("Step 5 — user can open New Project modal and submit", async () => {
         const user = userEvent.setup();
@@ -464,7 +464,7 @@ describe("Integration: Login → Dashboard → Create Project → Assign Task", 
         });
     });
 
-    // ── Step 7 ──────────────────────────────────────────────────────────────────
+    //  Step 7 
 
     it("Step 7 — newly created task appears in the task list", async () => {
         renderAuthPage("/tasks");

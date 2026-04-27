@@ -35,9 +35,21 @@ router.delete("/:id/comments/:commentId", deleteComment);
 router.post(
   "/:id/attachments",
   restrictTo("Admin", "Manager"),
-  upload.single("file"),
+  (req, res, next) => {
+    upload.single("file")(req, res, (err) => {
+      if (err) {
+        console.error("MULTER ERROR:", err); // <-- add this line
+        return res.status(400).json({
+          success: false,
+          message: err.message || "File upload failed",
+        });
+      }
+      next();
+    });
+  },
   uploadAttachment
 );
+
 router.delete(
   "/:id/attachments/:attachmentId",
   restrictTo("Admin", "Manager"),

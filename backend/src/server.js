@@ -1,7 +1,5 @@
 
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
 import cors from 'cors';
 import connectDB from './config/dbConfig.js';
@@ -11,11 +9,12 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import projectRoutes from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import taskRoutes from "./routes/taskRoute.js";
-import cloudinary from './config/cloudinary.js';
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 
 import { createServer } from "http";
 import { initSocket } from "./socket/socket.js";
+
+dotenv.config();
 
 // Load environment variables
 
@@ -28,7 +27,7 @@ initSocket(httpServer);
 
 // Middleware
 app.use(cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin: process.env.CLIENT_URL,
     credentials: true
 }));
 app.use(express.json());

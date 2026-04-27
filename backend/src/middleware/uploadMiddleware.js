@@ -4,10 +4,19 @@ import cloudinary from "../config/cloudinary.js";
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "enterprise-wms/attachments",
-    allowed_formats: ["jpg", "jpeg", "png", "pdf", "doc", "docx", "xls", "xlsx"],
-    resource_type: "auto",
+  params: async (req, file) => {
+    const isRaw = [
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ].includes(file.mimetype);
+
+    return {
+      folder: "enterprise-wms/attachments",
+      resource_type: isRaw ? "raw" : "auto",
+      ...(isRaw ? {} : { allowed_formats: ["jpg", "jpeg", "png", "pdf"] }),
+    };
   },
 });
 

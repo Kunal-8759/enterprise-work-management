@@ -15,6 +15,10 @@
     color: var(--color-text-primary);
   }
 
+  body.dark .form-label {
+    color: var(--color-dark-text-primary);
+  }
+
   .input-field {
     @apply w-full outline-none transition-all;
     padding: 0.625rem 0.875rem;
@@ -23,12 +27,24 @@
     font-size: var(--font-size-sm);
     background-color: var(--color-surface);
     color: var(--color-text-primary);
-    transition: border-color var(--transition-fast);
+    transition: border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  body.dark .input-field {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-primary);
   }
 
   .input-field:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px var(--color-primary-light);
+  }
+
+  body.dark .input-field:focus {
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
   }
 
   .input-field-error {
@@ -53,6 +69,10 @@
     @apply flex items-center gap-2 cursor-pointer;
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+  }
+
+  body.dark .remember-me {
+    color: var(--color-dark-text-secondary);
   }
 
   .remember-me input[type="checkbox"] {
@@ -88,6 +108,10 @@
     @apply text-center;
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+  }
+
+  body.dark .auth-divider {
+    color: var(--color-dark-text-secondary);
   }
 
   .auth-link {

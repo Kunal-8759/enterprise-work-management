@@ -217,32 +217,7 @@ const ProjectDetail = () => {
           ))}
         </div>
       </div>
-
-      {/* Tasks Kanban */}
-      <div className="detail-section">
-        <div className="detail-section-header">
-          <h2 className="detail-section-title">
-            <CheckSquare size={18} />
-            Tasks ({projectTasks.length})
-          </h2>
-
-          {/* Only Admin and member-Managers can create tasks here */}
-          {canCreateTask && (
-            <button
-              className="btn-create"
-              onClick={() => setCreateTaskOpen(true)}
-            >
-              <Plus size={16} />
-              New Task
-            </button>
-          )}
-        </div>
-        <KanbanBoard
-          tasks={projectTasks}
-          onTaskClick={() => {}}
-          onEditTask={setEditTask}
-        />
-      </div>
+      
 
       {createTaskOpen && (
         <TaskModal

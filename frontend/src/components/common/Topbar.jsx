@@ -12,7 +12,7 @@ const pageTitles = {
   "/projects": "Projects",
   "/tasks": "Tasks",
   "/analytics": "Analytics",
-  "/users": "User Management",
+  "/users": "Users",
   "/settings": "Settings",
 };
 
